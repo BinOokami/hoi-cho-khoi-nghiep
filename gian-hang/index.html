@@ -44,7 +44,7 @@
   .btn-outline{background:#fff;color:var(--g-700);border:2px solid var(--g-700);padding:10px 20px}
 
   /* ---------- chia sẻ: nút + pop-up mã QR ---------- */
-  .nav-share{margin-left:14px;padding:9px 18px;font-size:14px}
+  .nav .nav-share{margin-left:14px;padding:6px 15px;line-height:1.5;gap:6px;box-shadow:0 6px 16px -8px rgba(217,154,30,.7)}
   .sharebox-bg{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:20px;background:color-mix(in srgb,var(--g-950) 55%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
   .sharebox-bg[hidden]{display:none}
   .sharebox{position:relative;width:100%;max-width:340px;border-radius:22px;padding:22px 20px 18px;text-align:center;color:var(--ink)}
@@ -264,7 +264,7 @@
 
   /* ---------- responsive ---------- */
   @media (max-width:900px){
-    .nav .links{display:none}.nav-share{margin-left:auto}
+    .nav .links{display:none}.nav .nav-share{margin-left:auto}
     .hero{min-height:0;padding:100px 0 110px}
     .hero-grid{grid-template-columns:1fr}
     .logo-card{display:none}
