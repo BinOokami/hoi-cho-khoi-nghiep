@@ -437,7 +437,8 @@ setTimeout(() => document.documentElement.classList.remove("is-loading"), 10000)
             </label>
             <div class="err" id="e-dongy"></div>
 
-            <button class="btn btn-green" type="submit">Gửi thông tin</button>
+            <div class="err" id="e-submit"></div>
+            <button class="btn btn-green" type="submit" id="leadBtn">Gửi thông tin</button>
             <details class="terms" id="terms">
               <summary>Điều khoản</summary>
               <p>Thông tin bạn gửi chỉ chủ gian hàng, đơn vị tổ chức (Tỉnh đoàn Khánh Hòa) và đơn vị hỗ trợ kỹ thuật (JCI Khanhhoa) có thể xem; chỉ phục vụ mục đích trong phạm vi sự kiện và không cung cấp cho bên thứ ba.</p>
@@ -567,6 +568,7 @@ setTimeout(() => document.documentElement.classList.remove("is-loading"), 10000)
 </div>
 
 <script src="/js/vendor/qrcode.js"></script>
+<script src="/js/themes.js"></script>
 <script src="/js/config.js"></script>
 <script type="module">
 /* ======================================================================
@@ -575,54 +577,8 @@ setTimeout(() => document.documentElement.classList.remove("is-loading"), 10000)
    dia_chi, facebook, website, tiktok, zalo_oa, kenh_khac (trống -> tự ẩn).
    Ảnh luôn căn giữa: vừa theo chiều cao khung, thừa thì cắt đều 2 bên, thiếu thì 2 bên là nền mờ.
    ====================================================================== */
-/* 5 bảng màu phối sẵn (màu chủ đạo) */
-const THEMES = {
-  "xanh-dai-ngan": {
-    name: "Xanh đại ngàn",
-    desc: "Nông sản, dược liệu, thảo mộc",
-    color: "#17663a",
-    vars: {
-      "--g-950":"#08291a", "--g-900":"#0f3d24", "--g-800":"#134d2e", "--g-700":"#17663a",
-      "--g-500":"#22a35a", "--g-100":"#e3f4ea", "--g-50":"#f3faf6", "--ink":"#13241a", "--muted":"#5a6b61", "--line":"#dce9e1"
-    }
-  },
-  "nau-vang-mat": {
-    name: "Nâu vàng mật",
-    desc: "Mật ong, cà phê, nấm, đồ gỗ",
-    color: "#8c531b",
-    vars: {
-      "--g-950":"#261608", "--g-900":"#3d240f", "--g-800":"#4d2e13", "--g-700":"#7a4417",
-      "--g-500":"#b86c22", "--g-100":"#f7ece1", "--g-50":"#faf6f0", "--ink":"#26190e", "--muted":"#6e5a4c", "--line":"#ebdcd0"
-    }
-  },
-  "do-tho-cam": {
-    name: "Đỏ thổ cẩm",
-    desc: "Thổ cẩm, rượu cần, thủ công",
-    color: "#85222f",
-    vars: {
-      "--g-950":"#29080c", "--g-900":"#421117", "--g-800":"#54161e", "--g-700":"#85222f",
-      "--g-500":"#b8394a", "--g-100":"#fae6e8", "--g-50":"#faf3f4", "--ink":"#290f12", "--muted":"#705053", "--line":"#ebd3d6"
-    }
-  },
-  "cam-dat": {
-    name: "Cam đất nung",
-    desc: "Trái cây sấy, bánh mứt, gốm",
-    color: "#994d13",
-    vars: {
-      "--g-950":"#291508", "--g-900":"#42230f", "--g-800":"#542d13", "--g-700":"#854617",
-      "--g-500":"#c26a23", "--g-100":"#faeee3", "--g-50":"#faf5f0", "--ink":"#29180f", "--muted":"#705749", "--line":"#ebdcd1"
-    }
-  },
-  "xanh-lam": {
-    name: "Xanh suối nguồn",
-    desc: "Thủy hải sản, nước uống, sinh thái",
-    color: "#175173",
-    vars: {
-      "--g-950":"#081c29", "--g-900":"#0f2b3d", "--g-800":"#13374d", "--g-700":"#175173",
-      "--g-500":"#227ea3", "--g-100":"#e3eff7", "--g-50":"#f2f7fa", "--ink":"#0f1f29", "--muted":"#4f6370", "--line":"#cfe0eb"
-    }
-  }
-};
+/* Bảng màu: dùng chung, định nghĩa trong /js/themes.js */
+const THEMES = window.HOICHO_THEMES;
 
 function applyTheme(key){
   const t = THEMES[key] || THEMES["xanh-dai-ngan"];
@@ -969,7 +925,27 @@ function looksLikeContact(v){
   return /@/.test(v) ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
                      : v.replace(/\D/g,"").length >= 9 || /zalo\.me\//i.test(v);
 }
-$("leadForm").addEventListener("submit", e => {
+const LEAD_ERR = { ten: "họ tên", lien_he: "cách liên hệ", nhu_cau: "nhu cầu", dong_y: "ô đồng ý", too_large: "nội dung quá dài" };
+function leadErrorText(msg) {
+  if (msg === "not_available") return "Gian hàng này hiện chưa nhận thông tin. Vui lòng thử lại sau.";
+  if (msg === "duplicate") return "Bạn vừa gửi thông tin này rồi, vui lòng đợi một phút nếu muốn gửi lại.";
+  if (msg === "busy") return "Hệ thống đang bận, vui lòng thử lại sau ít phút.";
+  const m = /^invalid:(.+)$/.exec(msg || "");
+  if (m) return "Thông tin chưa hợp lệ: " + (LEAD_ERR[m[1]] || m[1]) + ". Vui lòng kiểm tra lại.";
+  return "Gửi chưa được, vui lòng thử lại sau ít phút.";
+}
+async function sendLead(payload) {
+  const C = window.APP_CONFIG;
+  const res = await fetch(`${C.SUPABASE_URL}/rest/v1/rpc/gui_khach_de_lai`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", apikey: C.SUPABASE_KEY },
+    body: JSON.stringify({ p_slug: SLUG, p: payload })
+  });
+  if (res.ok) return;
+  const d = await res.json().catch(() => null);
+  throw new Error((d && d.message) || "");
+}
+$("leadForm").addEventListener("submit", async e => {
   e.preventDefault();
   const errs = {};
   if (!$("ten").value.trim()) errs.ten = "Vui lòng nhập họ tên hoặc tên đơn vị.";
@@ -977,9 +953,22 @@ $("leadForm").addEventListener("submit", e => {
   if ($("nhucau").value.trim().length < 5) errs.nhucau = "Vui lòng mô tả ngắn nhu cầu của bạn.";
   if (!$("dongy").checked) errs.dongy = "Bạn cần tích đồng ý để gửi thông tin.";
   ["ten","lienhe","nhucau","dongy"].forEach(k => set("e-"+k, errs[k] || ""));
+  set("e-submit", "");
   if (Object.keys(errs).length) return;
-  /* Bản thật: gửi tới webhook n8n. Bản phác thảo chỉ hiện thông báo. */
-  $("leadForm").hidden = true; $("done").hidden = false;
+
+  if (!SLUG) { $("leadForm").hidden = true; $("done").hidden = false; return; }   // trang mẫu: không gửi đi đâu
+  if (!LIVE || LIVE.status !== "ok") {                                               // bản xem trước (chưa duyệt)
+    set("e-submit", "Đây là bản xem trước nên chưa nhận thông tin khách. Trang sẽ nhận khi gian hàng được duyệt.");
+    return;
+  }
+  const btn = $("leadBtn"), label = btn.textContent;
+  btn.disabled = true; btn.textContent = "Đang gửi…";
+  try {
+    await sendLead({ ten: $("ten").value.trim(), lien_he: $("lienhe").value.trim(), nhu_cau: $("nhucau").value.trim(), dong_y: true });
+    $("leadForm").hidden = true; $("done").hidden = false;
+  } catch (err) {
+    set("e-submit", leadErrorText(err.message));
+  } finally { btn.disabled = false; btn.textContent = label; }
 });
 
 /* ======================== chia sẻ: QR + sao chép + chia sẻ qua ứng dụng ======================== */
