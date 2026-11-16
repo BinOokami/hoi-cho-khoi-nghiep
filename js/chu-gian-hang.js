@@ -28,13 +28,19 @@
     show("stAsk");
   }
 
-  async function load(token, fromUser) {
+  async function load(token, fromUser, triedSaved) {
     show("stLoading");
     let data;
     try { data = await rpc("lay_khach_cua_gian_hang", { p_slug: SLUG, p_token: token }); }
     catch (_) { showError("Chưa tải được trang", "Vui lòng kiểm tra kết nối mạng rồi tải lại trang."); return; }
     if (!data) {
-      localStorage.removeItem(LS_KEY);
+      const saved = localStorage.getItem(LS_KEY);
+      // Link sai mã (cũ/sai) nhưng máy này đã lưu mã đúng: dùng mã đã lưu, không làm mất nó
+      if (!triedSaved && saved && saved !== token && UUID.test(saved)) {
+        history.replaceState(null, "", `?s=${encodeURIComponent(SLUG)}`);
+        return load(saved, false, true);
+      }
+      if (saved === token) localStorage.removeItem(LS_KEY);   // chỉ xóa khi chính mã đã lưu bị hết hiệu lực
       askForToken("Mã quản lý không đúng hoặc đã hết hiệu lực (có thể link đã được đổi). Hãy dán mã mới từ email gần nhất của Ban tổ chức.");
       if (fromUser) $("askErr").textContent = "Mã chưa đúng, vui lòng kiểm tra lại.";
       return;
