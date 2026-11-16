@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="vi">
+<html lang="vi" class="is-loading">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +13,7 @@
   :root{
     --g-950:#08291a; --g-900:#0f3d24; --g-800:#134d2e; --g-700:#17663a; --g-500:#22a35a; --g-100:#e3f4ea; --g-50:#f3faf6;
     --gold:#f2b544; --gold-2:#d99a1e; --ink:#13241a; --muted:#5a6b61; --line:#dce9e1; --zalo:#0068ff;
-    --shadow:0 18px 50px -18px rgba(8,41,26,.35);
+    --shadow:0 18px 50px -18px color-mix(in srgb,var(--g-950) 35%,transparent);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -27,6 +27,14 @@
   .glass{background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);border:1px solid rgba(255,255,255,.28);box-shadow:0 8px 32px rgba(0,0,0,.12)}
   .glass-light{background:rgba(255,255,255,.74);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,.8);box-shadow:var(--shadow)}
 
+  /* ---------- màn hình tải: ẩn mọi thứ cho tới khi biết sẽ hiện trang nào (tránh nháy trang mẫu) ---------- */
+  html.is-loading body{overflow:hidden}
+  html.is-loading body>*:not(#pageLoader){visibility:hidden}
+  #pageLoader{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(160deg,#0f3d24,#08291a);color:rgba(255,255,255,.85);font-size:14px}
+  html.is-loading #pageLoader{display:flex}
+  #pageLoader i{width:38px;height:38px;border-radius:50%;border:3px solid rgba(255,255,255,.2);border-top-color:#f2b544;animation:pl-spin .8s linear infinite}
+  @keyframes pl-spin{to{transform:rotate(360deg)}}
+
   /* ---------- gian hàng không tồn tại ---------- */
   .hero.nf{justify-content:center;text-align:center}
   .nf-card{max-width:480px;margin:0 auto;border-radius:24px;padding:34px 28px 30px;color:var(--ink)}
@@ -35,8 +43,27 @@
   .nf-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
   .btn-outline{background:#fff;color:var(--g-700);border:2px solid var(--g-700);padding:10px 20px}
 
+  /* ---------- chia sẻ: nút + pop-up mã QR ---------- */
+  .nav-share{margin-left:14px;padding:9px 18px;font-size:14px}
+  .sharebox-bg{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:20px;background:color-mix(in srgb,var(--g-950) 55%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .sharebox-bg[hidden]{display:none}
+  .sharebox{position:relative;width:100%;max-width:340px;border-radius:22px;padding:22px 20px 18px;text-align:center;color:var(--ink)}
+  .sharebox h3{margin:0 36px 4px;font-size:19px;line-height:1.3;color:var(--g-900)}
+  .sharebox .sub{margin:0 0 16px;font-size:13.5px;color:var(--muted);overflow-wrap:anywhere}
+  .sharebox .x{position:absolute;top:10px;right:10px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.9);color:var(--muted);font-size:22px;line-height:1;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.15)}
+  .qr-wrap{display:inline-block;background:#fff;border-radius:16px;padding:10px;box-shadow:0 6px 24px -10px rgba(0,0,0,.35)}
+  .qr-wrap canvas{display:block;width:200px;height:200px;image-rendering:pixelated}
+  .share-link{display:flex;gap:6px;margin:14px 0 10px}
+  .share-link input{flex:1;min-width:0;font:inherit;font-size:13px;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px}
+  .share-link .btn{padding:7px 14px;min-height:0;font-size:13px;flex:none}
+  .share-acts{display:flex;flex-direction:column;gap:6px}
+  .share-acts .btn{width:100%;padding:8px 14px;min-height:0;font-size:13.5px;font-weight:600;box-shadow:none}
+  .share-acts .btn .ico{width:1em;height:1em}
+  .share-acts .btn-outline{border-width:1.5px}
+  .share-acts .btn[hidden]{display:none}
+
   /* ---------- thông báo trang mẫu ---------- */
-  .notice{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(8,41,26,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .notice{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:color-mix(in srgb,var(--g-950) 50%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
   .notice-box{max-width:420px;width:100%;border-radius:24px;padding:28px 26px 24px;text-align:center}
   .notice-ic{width:52px;height:52px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:var(--g-100);color:var(--g-700);font:800 24px/1 Georgia,serif}
   .notice-box h3{margin:0 0 8px;font-size:20px;color:var(--g-900)}
@@ -69,7 +96,7 @@
   .brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
   .brand img{width:38px;height:38px;border-radius:10px;background:#fff;flex:none}
   .brand span{font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .nav.solid{background:rgba(15,61,36,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 6px 24px rgba(0,0,0,.18)}
+  .nav.solid{background:color-mix(in srgb,var(--g-900) 82%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 6px 24px rgba(0,0,0,.18)}
   .nav .links{margin-left:auto;display:flex;gap:26px}
   .nav .links a{color:rgba(255,255,255,.88);text-decoration:none;font-weight:500;font-size:15px}
   .nav .links a:hover{color:#fff}
@@ -77,14 +104,13 @@
   .btn:active{transform:scale(.97)}
   .btn-gold{background:linear-gradient(135deg,#ffd27a,var(--gold) 45%,var(--gold-2));color:#3a2604;box-shadow:0 10px 24px -8px rgba(217,154,30,.7)}
   .btn-glass{color:#fff}
-  .nav .cta{padding:9px 18px;font-size:14px}
 
   /* ---------- 1. banner ---------- */
   .hero{position:relative;margin-top:-64px;padding:120px 0 130px;color:#fff;overflow:hidden;min-height:600px;display:flex;align-items:center}
   .hero .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
   .hero::before{content:"";position:absolute;inset:0;z-index:1;background:
-      linear-gradient(100deg,rgba(8,41,26,.92) 0%,rgba(15,61,36,.78) 42%,rgba(15,61,36,.3) 100%),
-      linear-gradient(0deg,rgba(8,41,26,.55),transparent 40%)}
+      linear-gradient(100deg,color-mix(in srgb,var(--g-950) 92%,transparent) 0%,color-mix(in srgb,var(--g-900) 78%,transparent) 42%,color-mix(in srgb,var(--g-900) 30%,transparent) 100%),
+      linear-gradient(0deg,color-mix(in srgb,var(--g-950) 55%,transparent),transparent 40%)}
   .hero .wrap{position:relative;z-index:2;width:100%}
   .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
   .chip{display:inline-flex;align-items:center;border-radius:999px;padding:7px 16px;font-size:13px;font-weight:600;letter-spacing:.2px}
@@ -120,7 +146,7 @@
   .photo .float b{display:block;font-size:15px}.photo .float span{font-size:13px;color:var(--muted)}
 
   /* ---------- 3. sản phẩm nổi bật ---------- */
-  .hl-sec{position:relative;margin-top:80px;padding:84px 0;background:radial-gradient(1200px 500px at 85% 0%,#1d7a45 0%,transparent 60%),linear-gradient(160deg,var(--g-800),var(--g-950));color:#fff;overflow:hidden}
+  .hl-sec{position:relative;margin-top:80px;padding:84px 0;background:radial-gradient(1200px 500px at 85% 0%,color-mix(in srgb,var(--g-700),var(--g-500)) 0%,transparent 60%),linear-gradient(160deg,var(--g-800),var(--g-950));color:#fff;overflow:hidden}
   .hl-sec::before,.hl-sec::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:.45}
   .hl-sec::before{width:360px;height:360px;background:var(--gold);left:-120px;top:40%}
   .hl-sec::after{width:300px;height:300px;background:#38c172;right:-80px;bottom:-60px}
@@ -129,7 +155,7 @@
   .hl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}
   .hl{border-radius:20px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:#fff;transition:transform .25s,box-shadow .25s}
   .hl:hover{transform:translateY(-6px);box-shadow:0 20px 40px -16px rgba(0,0,0,.5)}
-  .hl .num{position:absolute;z-index:2;top:10px;left:10px;font-weight:800;font-size:14px;border-radius:10px;padding:3px 9px;background:rgba(8,41,26,.6);color:#fff}
+  .hl .num{position:absolute;z-index:2;top:10px;left:10px;font-weight:800;font-size:14px;border-radius:10px;padding:3px 9px;background:color-mix(in srgb,var(--g-950) 60%,transparent);color:#fff}
   .hl .body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
   .hl h3{margin:0 0 6px;font-size:16px;line-height:1.3}
   /* chống tràn khi người dùng nhập từ rất dài hoặc link dài */
@@ -148,20 +174,20 @@
   /* ---------- 4. chi tiết sản phẩm ---------- */
   .dt-sec{padding:84px 0 20px}
   .dt-list{display:flex;flex-direction:column;gap:28px}
-  .dt{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;background:#fff;border-radius:28px;padding:24px;box-shadow:0 14px 40px -24px rgba(8,41,26,.45);transition:box-shadow .4s}
+  .dt{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;background:#fff;border-radius:28px;padding:24px;box-shadow:0 14px 40px -24px color-mix(in srgb,var(--g-950) 45%,transparent);transition:box-shadow .4s}
   .dt:nth-child(even) .dt-media{order:2}
   .dt-media{border-radius:20px;overflow:hidden}
   .dt-text{padding:8px 16px}
   .dt .no{font-weight:800;font-size:44px;line-height:1;background:linear-gradient(135deg,#ffd27a,var(--gold-2));-webkit-background-clip:text;background-clip:text;color:transparent}
   .dt h3{font-size:clamp(22px,2.6vw,28px);line-height:1.25;margin:8px 0 12px;color:var(--g-900)}
   .dt .desc{--lines:6;margin:0;color:#2b3d32}
-  .dt.flash{box-shadow:0 0 0 4px var(--gold),0 14px 40px -24px rgba(8,41,26,.45)}
+  .dt.flash{box-shadow:0 0 0 4px var(--gold),0 14px 40px -24px color-mix(in srgb,var(--g-950) 45%,transparent)}
 
   /* ---------- 5. form kết nối ---------- */
   .lead{padding:70px 0 84px}
   .lead-box{position:relative;border-radius:30px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-height:560px;box-shadow:var(--shadow)}
   .lead-box > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-  .lead-box::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(8,41,26,.88),rgba(8,41,26,.4))}
+  .lead-box::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,color-mix(in srgb,var(--g-950) 88%,transparent),color-mix(in srgb,var(--g-950) 40%,transparent))}
   .lead-copy,.form{position:relative;z-index:2}
   .lead-copy{color:#fff;padding:50px;align-self:center}
   .lead-copy h2{font-size:clamp(26px,3.6vw,36px);line-height:1.2;margin:14px 0 12px}
@@ -180,7 +206,7 @@
   .form .hint{margin:0 0 4px;color:var(--muted);font-size:13.5px}
   label{display:block;font-weight:600;margin:10px 0 4px;font-size:14px;color:#21352a}
   input[type=text],textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;padding:10px 13px;border:1.5px solid #cfe0d5;border-radius:11px;background:rgba(255,255,255,.92);color:var(--ink);transition:border-color .2s,box-shadow .2s}
-  input:focus,textarea:focus{outline:0;border-color:var(--g-500);box-shadow:0 0 0 4px rgba(34,163,90,.18)}
+  input:focus,textarea:focus{outline:0;border-color:var(--g-500);box-shadow:0 0 0 4px color-mix(in srgb,var(--g-500) 18%,transparent)}
   textarea{min-height:82px;resize:vertical}
   .count{font-size:12px;color:var(--muted);text-align:right;margin-top:1px;line-height:1.3}
   .err{color:#b3261e;font-size:13px;margin-top:3px;line-height:1.35}
@@ -189,7 +215,7 @@
   .consent input{margin-top:2px;width:18px;height:18px;flex:none;accent-color:var(--g-700)}
   .consent a{color:var(--g-700);font-weight:600}
   .form .btn{width:100%;margin-top:12px;padding:13px}
-  .btn-green{background:linear-gradient(135deg,var(--g-500),var(--g-700));color:#fff;box-shadow:0 12px 26px -10px rgba(23,102,58,.8)}
+  .btn-green{background:linear-gradient(135deg,var(--g-500),var(--g-700));color:#fff;box-shadow:0 12px 26px -10px color-mix(in srgb,var(--g-700) 80%,transparent)}
   details.terms{margin-top:10px;font-size:13px;color:var(--muted)}
   details.terms summary{cursor:pointer}
   .done{text-align:center;padding:30px 10px}
@@ -215,7 +241,7 @@
   .pl p{margin:0;font-size:14px;color:rgba(255,255,255,.78)}
 
   /* ---------- 7. footer ---------- */
-  footer{background:#061f13;color:rgba(255,255,255,.78);padding:56px 0 30px;font-size:14px}
+  footer{background:color-mix(in srgb,var(--g-950) 78%,#000);color:rgba(255,255,255,.78);padding:56px 0 30px;font-size:14px}
   .f-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:36px}
   .f-title{color:#fff;font-weight:700;font-size:17px;line-height:1.4;max-width:380px}
   footer .org{color:#fff;font-size:15px}
@@ -238,7 +264,7 @@
 
   /* ---------- responsive ---------- */
   @media (max-width:900px){
-    .nav .links{display:none}.nav .cta{margin-left:auto}
+    .nav .links{display:none}.nav-share{margin-left:auto}
     .hero{min-height:0;padding:100px 0 110px}
     .hero-grid{grid-template-columns:1fr}
     .logo-card{display:none}
@@ -253,7 +279,7 @@
     .dt-text{padding:4px 8px 10px}
     .dt .no{font-size:34px}
     .lead-box{grid-template-columns:1fr}
-    .lead-box::before{background:linear-gradient(180deg,rgba(8,41,26,.9) 0%,rgba(8,41,26,.75) 45%,rgba(8,41,26,.5) 100%)}
+    .lead-box::before{background:linear-gradient(180deg,color-mix(in srgb,var(--g-950) 90%,transparent) 0%,color-mix(in srgb,var(--g-950) 75%,transparent) 45%,color-mix(in srgb,var(--g-950) 50%,transparent) 100%)}
     .lead-copy{padding:36px 24px 6px}
     .form{margin:18px;padding:22px}
     .ev-top{grid-template-columns:1fr;gap:26px}
@@ -266,7 +292,6 @@
     .mbar a.zalo{background:var(--zalo)}
     .mbar a.more{background:rgba(255,255,255,.92);color:var(--g-800)}
   }
-  @media (max-width:600px){ .nav .cta{display:none} }
   @media (max-width:480px){
     .wrap{padding:0 16px}
     .hl-grid{--pad:16px}
@@ -277,6 +302,12 @@
 </style>
 </head>
 <body>
+<div id="pageLoader" role="status" aria-live="polite"><i></i><span>Đang tải…</span></div>
+<script>
+/* Phòng khi có lỗi bất ngờ: không để màn hình tải treo mãi */
+addEventListener("error", () => setTimeout(() => document.documentElement.classList.remove("is-loading"), 1500));
+setTimeout(() => document.documentElement.classList.remove("is-loading"), 10000);
+</script>
 
 <!-- Thông báo trang mẫu (chỉ có ở bản mẫu, bỏ khi chạy dữ liệu thật) -->
 <div class="notice" id="notice" role="dialog" aria-modal="true" aria-labelledby="noticeT">
@@ -296,9 +327,9 @@
       <a href="#gioi-thieu">Giới thiệu</a>
       <a href="#san-pham">Sản phẩm</a>
       <a href="#ket-noi">Liên hệ</a>
-      <a href="#hoi-cho">Hội chợ</a>
+      <a href="#hoi-cho">Về chương trình</a>
     </nav>
-    <a class="btn btn-gold cta" href="#ket-noi">Liên hệ ngay</a>
+    <button type="button" class="btn btn-gold nav-share" id="shareBtn" aria-haspopup="dialog"><svg class="ico"><use href="#i-share"/></svg>Chia sẻ</button>
   </div>
 </header>
 
@@ -513,10 +544,31 @@
   <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.6 2.8 2.6 4.6 5 5"/></symbol>
   <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.7l7.4-4.2M8.3 13.3l7.4 4.2"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
 </svg>
 
-<script>
+<!-- Pop-up chia sẻ: mã QR + sao chép + chia sẻ qua ứng dụng khác -->
+<div class="sharebox-bg" id="shareModal" hidden>
+  <div class="sharebox glass-light" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+    <button type="button" class="x" id="shareClose" aria-label="Đóng">&times;</button>
+    <h3 id="shareTitle">Chia sẻ gian hàng</h3>
+    <p class="sub" id="shareName"></p>
+    <div class="qr-wrap"><canvas id="qrCanvas" width="400" height="400" role="img" aria-label="Mã QR của gian hàng"></canvas></div>
+    <div class="share-link">
+      <input type="text" id="shareLink" readonly aria-label="Đường dẫn gian hàng">
+      <button type="button" class="btn btn-green" id="shareCopy">Sao chép</button>
+    </div>
+    <div class="share-acts">
+      <button type="button" class="btn btn-green" id="shareNative" hidden><svg class="ico"><use href="#i-share"/></svg>Chia sẻ qua ứng dụng khác</button>
+      <button type="button" class="btn btn-outline" id="shareDl">Tải mã QR về</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/vendor/qrcode.js"></script>
+<script src="/js/config.js"></script>
+<script type="module">
 /* ======================================================================
    DỮ LIỆU GIẢ LẬP — sau này thay bằng dữ liệu Supabase theo slug.
    Trường tùy chọn: logo, anh_bia, khau_hieu, ma_gian, nhom_san_pham,
@@ -586,18 +638,32 @@ function applyTheme(key){
 /* /gian-hang/ (không có ?s=) = trang mẫu; /gian-hang/?s=<slug> = trang gian hàng thật (sau này đọc Supabase theo slug) */
 const SLUG = (new URLSearchParams(location.search).get("s") || "").trim();
 
-/* TẠM: danh sách slug "tồn tại" giả lập. Khi nối Supabase thì thay bằng tra cứu theo slug. */
-const KNOWN_SLUGS = ["mat-ong-khanh-son-k7x2q"];
-if (SLUG && !KNOWN_SLUGS.includes(SLUG)) {
-  /* Giữ nguyên nền, thanh đầu trang và chân trang của trang mẫu; thay phần thân bằng thông báo. */
-  document.title = "Không tìm thấy gian hàng";
+/* ---------- Trang gian hàng thật: tải từ Supabase khi có ?s=<slug> ----------
+   Trang mẫu (không có ?s=) dùng dữ liệu giả bên dưới. Link xem trước của BTC: ?s=<slug>&xem=<owner_token> */
+const showPage = () => document.documentElement.classList.remove("is-loading");
+const XEM = (new URLSearchParams(location.search).get("xem") || "").trim();
+
+async function loadBooth(slug, xem) {
+  const C = window.APP_CONFIG;
+  const res = await fetch(`${C.SUPABASE_URL}/rest/v1/rpc/lay_gian_hang`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", apikey: C.SUPABASE_KEY },
+    body: JSON.stringify({ p_slug: slug, p_xem: xem || null })
+  });
+  if (!res.ok) throw new Error("http " + res.status);
+  return await res.json();   // null nếu không có hoặc chưa được duyệt
+}
+
+/* Thay phần thân bằng một thông báo, giữ nguyên nền, thanh đầu trang và chân trang của trang mẫu. */
+function showMessage(title, text, actions, brand) {
+  document.title = title;
   ["notice", "mbar", "themeBar"].forEach(id => document.getElementById(id)?.remove());
   document.querySelector("main")?.remove();
   document.querySelector("#nav .links")?.remove();
-  document.querySelector("#nav .cta")?.remove();
+  document.querySelector("#nav .nav-share")?.remove();
   document.getElementById("nav").classList.add("solid");
-  document.getElementById("navLogo").src = "/assets/default-logo.webp";
-  document.getElementById("navName").textContent = "Hội chợ khởi nghiệp thanh niên";
+  document.getElementById("navLogo").src = (brand && brand.logo) || "/assets/default-logo.webp";
+  document.getElementById("navName").textContent = (brand && brand.name) || "Hội chợ khởi nghiệp thanh niên";
   const hero = document.getElementById("top");
   hero.className = "hero nf";
   hero.innerHTML = `
@@ -605,15 +671,57 @@ if (SLUG && !KNOWN_SLUGS.includes(SLUG)) {
     <div class="wrap">
       <div class="nf-card glass-light">
         <div class="notice-ic">?</div>
-        <h1>Không có gian hàng này</h1>
-        <p>Gian hàng này chưa được đăng ký. Vui lòng kiểm tra lại mã QR hoặc đường dẫn.</p>
-        <div class="nf-actions">
-          <a class="btn btn-green" href="/">Về trang chủ</a>
-          <a class="btn btn-outline" href="/gian-hang/">Xem trang mẫu</a>
-        </div>
+        <h1></h1>
+        <p></p>
+        <div class="nf-actions"></div>
       </div>
     </div>`;
-  throw new Error("slug-not-found");  // dừng phần dựng trang gian hàng bên dưới
+  hero.querySelector("h1").textContent = title;
+  hero.querySelector("p").textContent = text;
+  const box = hero.querySelector(".nf-actions");
+  actions.forEach(a => {
+    const l = document.createElement("a");
+    l.className = "btn " + (a.outline ? "btn-outline" : "btn-green");
+    l.href = a.href; l.textContent = a.label;
+    box.appendChild(l);
+  });
+  showPage();
+}
+
+let LIVE = null;
+if (SLUG) {
+  try {
+    LIVE = await loadBooth(SLUG, XEM);
+  } catch (err) {
+    showMessage("Chưa tải được trang", "Vui lòng kiểm tra kết nối mạng rồi thử lại.",
+      [{ label: "Thử lại", href: location.href }, { label: "Về trang chủ", href: "/", outline: true }]);
+    throw err;   // dừng phần dựng trang gian hàng bên dưới
+  }
+  if (LIVE && LIVE.cho_duyet) {   // có gian hàng nhưng chưa được duyệt: hàm chỉ trả tên + logo
+    showMessage("Trang của bạn đang được xác minh", "Vui lòng trở lại sau.",
+      [{ label: "Tải lại trang", href: location.href }, { label: "Về trang chủ", href: "/", outline: true }],
+      { name: LIVE.ten_gian_hang, logo: LIVE.logo });
+    throw new Error("booth-pending");   // dừng phần dựng trang gian hàng bên dưới
+  }
+  if (!LIVE) {
+    showMessage("Không có gian hàng này", "Gian hàng này chưa được đăng ký. Vui lòng kiểm tra lại mã QR hoặc đường dẫn.",
+      [{ label: "Về trang chủ", href: "/" }, { label: "Xem trang mẫu", href: "/gian-hang/", outline: true }]);
+    throw new Error("slug-not-found");   // dừng phần dựng trang gian hàng bên dưới
+  }
+}
+
+/* Dữ liệu Supabase -> dạng trang đang dùng; trường ảnh trống thì dùng ảnh mặc định */
+const DEFAULT_PRODS = ["mat-ong", "nong-san", "tho-cam", "gift"].map(n => `/assets/default-prod-${n}.webp`);
+function normalizeLive(d) {
+  return {
+    ...d,
+    logo: d.logo || "/assets/default-logo.webp",
+    anh_gioi_thieu: d.anh_gioi_thieu || DEFAULT_STORY,
+    kenh_khac: d.kenh_khac_link || "",
+    san_pham: (d.san_pham || []).map((p, i) => ({
+      ...p, anh: p.anh || DEFAULT_PRODS[i % DEFAULT_PRODS.length], don_vi: p.don_vi || "", mo_ta: p.mo_ta || "", gia: p.gia ?? null
+    }))
+  };
 }
 
 const U = (id, w = 900, h) => `https://images.unsplash.com/${id}?w=${w}${h ? "&h=" + h : ""}&q=72&auto=format&fit=crop`;
@@ -704,13 +812,24 @@ function monogram(name){
 }
 
 /* ======================== hiển thị ======================== */
-const B = BOOTH;
-applyTheme(B.mau_chu_dao);
+const B = LIVE ? normalizeLive(LIVE) : BOOTH;
+if (LIVE && LIVE.status === "pending") {
+  const bn = document.createElement("div");
+  bn.textContent = "Bản xem trước — gian hàng chưa được công khai";
+  bn.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:200;background:#f2b544;color:#3a2604;text-align:center;font:700 13px/1 system-ui,sans-serif;padding:8px 12px";
+  document.body.appendChild(bn);
+}
+applyTheme(B.mau_chu_dao);   // màu lấy từ trường mau_chu_dao của gian hàng (sau này do Supabase trả về)
 
-/* Nút thử đổi tông màu nhanh */
-document.querySelectorAll(".t-btn").forEach(btn => {
-  btn.addEventListener("click", () => applyTheme(btn.dataset.t));
-});
+/* Chỉ trang mẫu (/gian-hang/ không có ?s=) mới có thanh thử tông màu và hộp thông báo mẫu.
+   Trang gian hàng thật (có slug) bỏ cả hai: màu cố định theo dữ liệu gian hàng. */
+if (SLUG) {
+  ["themeBar", "notice"].forEach(id => document.getElementById(id)?.remove());
+} else {
+  document.querySelectorAll(".t-btn").forEach(btn => {
+    btn.addEventListener("click", () => applyTheme(btn.dataset.t));
+  });
+}
 const products = (B.san_pham || []).slice(0, 5);
 const logo = B.logo || monogram(B.ten_gian_hang);
 const slogan = B.khau_hieu || "";
@@ -807,7 +926,7 @@ const socials = [
   ["i-web", "Website", B.website],
   ["i-tiktok", "TikTok", B.tiktok],
   ["i-chat", "Zalo OA", B.zalo_oa],
-  ["i-link", B.kenh_khac ? channelName(B.kenh_khac) : "", B.kenh_khac]
+  ["i-link", B.kenh_khac ? (B.kenh_khac_ten || channelName(B.kenh_khac)) : "", B.kenh_khac]
 ].filter(s => isUrl(s[2]));
 socials.forEach(([ic, label, url]) => {
   const a = el("a","soc glass"); a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
@@ -819,6 +938,7 @@ if (!socials.length) $("ctSocial").remove();
 const mb = $("mbar");
 const a1 = el("a"); a1.href = "tel:" + B.sdt; a1.append(svgIcon("i-phone"), "Gọi"); mb.appendChild(a1);
 const a3 = el("a","more"); a3.href = "#ket-noi"; a3.append(svgIcon("i-chat"), "Liên hệ"); mb.appendChild(a3);
+const a4 = el("a","more"); a4.href = "#"; a4.id = "shareBtnM"; a4.setAttribute("role", "button"); a4.append(svgIcon("i-share"), "Chia sẻ"); mb.appendChild(a4);
 
 /* Thông báo trang mẫu: đóng bằng nút, bấm ra ngoài hoặc phím Esc */
 const notice = $("notice");
@@ -861,6 +981,73 @@ $("leadForm").addEventListener("submit", e => {
   /* Bản thật: gửi tới webhook n8n. Bản phác thảo chỉ hiện thông báo. */
   $("leadForm").hidden = true; $("done").hidden = false;
 });
+
+/* ======================== chia sẻ: QR + sao chép + chia sẻ qua ứng dụng ======================== */
+/* Link chia sẻ luôn là link công khai (không bao giờ kèm mã xem trước ?xem=) */
+const SHARE_URL = location.origin + "/gian-hang/" + (SLUG ? "?s=" + encodeURIComponent(SLUG) : "");
+function drawQR(canvas, text, size) {
+  const qr = qrcode(0, "M");            // tự chọn kích thước, mức sửa lỗi M
+  qr.addData(text, "Byte"); qr.make();
+  const n = qr.getModuleCount(), quiet = 4, cell = Math.floor(size / (n + quiet * 2));
+  const px = cell * (n + quiet * 2);
+  canvas.width = canvas.height = px;
+  const g = canvas.getContext("2d");
+  g.fillStyle = "#fff"; g.fillRect(0, 0, px, px);
+  g.fillStyle = "#000";
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++)
+    if (qr.isDark(r, c)) g.fillRect((c + quiet) * cell, (r + quiet) * cell, cell, cell);
+}
+const shareModal = $("shareModal");
+let lastFocus = null;
+function openShare(e) {
+  if (e) e.preventDefault();
+  lastFocus = document.activeElement;
+  set("shareName", B.ten_gian_hang);
+  $("shareLink").value = SHARE_URL;
+  drawQR($("qrCanvas"), SHARE_URL, 440);
+  $("shareNative").hidden = !navigator.share;
+  shareModal.hidden = false;
+  document.body.style.overflow = "hidden";
+  $("shareClose").focus();
+}
+function closeShare() {
+  shareModal.hidden = true;
+  document.body.style.overflow = "";
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+$("shareBtn").addEventListener("click", openShare);
+$("shareBtnM").addEventListener("click", openShare);
+$("shareClose").addEventListener("click", closeShare);
+shareModal.addEventListener("click", e => { if (e.target === shareModal) closeShare(); });
+addEventListener("keydown", e => { if (e.key === "Escape" && !shareModal.hidden) closeShare(); });
+$("shareLink").addEventListener("focus", e => e.target.select());
+$("shareCopy").addEventListener("click", async () => {
+  const btn = $("shareCopy");
+  try { await navigator.clipboard.writeText(SHARE_URL); }
+  catch (_) { $("shareLink").select(); document.execCommand("copy"); }
+  btn.textContent = "Đã sao chép ✓";
+  setTimeout(() => { btn.textContent = "Sao chép"; }, 2200);
+});
+$("shareNative").addEventListener("click", async () => {
+  try { await navigator.share({ title: B.ten_gian_hang, text: B.ten_gian_hang + " · Hội chợ khởi nghiệp thanh niên 2026", url: SHARE_URL }); }
+  catch (_) { /* người dùng đóng bảng chia sẻ: bỏ qua */ }
+});
+$("shareDl").addEventListener("click", () => {
+  const c = document.createElement("canvas");
+  drawQR(c, SHARE_URL, 1200);            // bản lớn để in A5
+  c.toBlob(b => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(b);
+    a.download = "qr-" + (SLUG || "gian-hang-mau") + ".png";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }, "image/png");
+});
+
+/* Mọi thứ đã dựng xong: chờ ảnh bìa tải (tối đa 2 giây) rồi mới hiện trang, để không bị giật */
+const coverEl = $("cover");
+if (coverEl && coverEl.src) await Promise.race([coverEl.decode().catch(() => {}), new Promise(r => setTimeout(r, 2000))]);
+showPage();
 </script>
 </body>
 </html>

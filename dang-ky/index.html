@@ -1,1134 +1,233 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Đăng ký gian hàng · Hội chợ khởi nghiệp thanh niên 2026</title>
+<meta name="description" content="Đăng ký thông tin gian hàng để có trang giới thiệu sản phẩm tại Hội chợ khởi nghiệp thanh niên vùng DTTS & miền núi Khánh Hòa 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --g-950: #08291a; --g-900: #0f3d24; --g-800: #134d2e; --g-700: #17663a; --g-500: #22a35a;
-    --g-100: #e3f4ea; --g-50: #f3faf6; --gold: #f2b544; --gold-2: #d99a1e; --ink: #13241a;
-    --muted: #5a6b61; --line: #dce9e1; --err: #c92a2a; --shadow: 0 18px 50px -18px rgba(8,41,26,.25);
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; font: 15px/1.6 "Be Vietnam Pro", system-ui, sans-serif;
-    color: var(--ink); background: var(--g-50);
-  }
-  .wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; }
-  
-  /* Header */
-  .header { text-align: center; margin-bottom: 28px; }
-  .badge {
-    display: inline-block; padding: 6px 16px; border-radius: 999px;
-    background: var(--g-100); color: var(--g-700); font-size: 13px; font-weight: 700; margin-bottom: 12px;
-  }
-  .header h1 { font-size: clamp(24px, 4vw, 34px); line-height: 1.25; margin: 0 0 10px; color: var(--g-900); font-weight: 800; }
-  .header p { color: var(--muted); margin: 0 auto; max-width: 600px; font-size: 15px; }
-
-  /* Dev / Test Config Bar */
-  .dev-bar {
-    background: #fff; border: 1.5px dashed var(--gold-2); border-radius: 18px;
-    padding: 16px 20px; margin-bottom: 28px; box-shadow: 0 4px 16px rgba(217,154,30,.15);
-  }
-  .dev-bar .title {
-    font-weight: 800; color: #8c531b; font-size: 14px; margin-bottom: 10px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .dev-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 10px; }
-  .dev-bar input, .dev-bar select {
-    width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px;
-    font-family: monospace; font-size: 13px; background: #faf7f2;
-  }
-  .dev-bar small { display: block; color: var(--muted); font-size: 12px; }
-
-  /* Quick Image Test Box inside Dev Bar */
-  .quick-test {
-    margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0e6d6;
-    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  }
-  .quick-test-label { font-size: 13px; font-weight: 700; color: #8c531b; }
-  .btn-test-file {
-    padding: 6px 14px; background: #8c531b; color: #fff; border-radius: 8px;
-    font-size: 12px; font-weight: 700; cursor: pointer; border: 0; display: inline-flex; align-items: center; gap: 6px;
-  }
-  .test-result-box {
-    width: 100%; font-family: monospace; font-size: 12px; padding: 10px 12px;
-    background: #1a1f1c; color: #6ee7b7; border-radius: 8px; margin-top: 8px; display: none;
-    max-height: 160px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
-  }
-
-  /* Stepper */
-  .stepper {
-    display: flex; justify-content: space-between; position: relative; margin-bottom: 32px;
-  }
-  .stepper::before {
-    content: ""; position: absolute; top: 18px; left: 10%; right: 10%; height: 3px;
-    background: var(--line); z-index: 0;
-  }
-  .step-progress {
-    position: absolute; top: 18px; left: 10%; height: 3px; background: var(--g-500);
-    z-index: 1; transition: width .3s ease; width: 0%;
-  }
-  .step-item {
-    position: relative; z-index: 2; display: flex; flex-direction: column;
-    align-items: center; gap: 6px; flex: 1; text-align: center;
-  }
-  .step-num {
-    width: 36px; height: 36px; border-radius: 50%; background: #fff; border: 2px solid var(--line);
-    display: grid; place-items: center; font-weight: 700; color: var(--muted); transition: all .2s;
-  }
-  .step-name { font-size: 13px; font-weight: 600; color: var(--muted); }
-  .step-item.active .step-num { background: var(--g-700); border-color: var(--g-700); color: #fff; transform: scale(1.08); }
-  .step-item.active .step-name { color: var(--g-900); font-weight: 700; }
-  .step-item.done .step-num { background: var(--g-500); border-color: var(--g-500); color: #fff; }
-
-  /* Card */
-  .card {
-    background: #fff; border-radius: 24px; padding: 32px 28px;
-    box-shadow: var(--shadow); border: 1px solid rgba(220,233,225,.7); margin-bottom: 24px;
-  }
-  .sec-title {
-    font-size: 19px; font-weight: 800; color: var(--g-900); margin: 0 0 4px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .sec-desc { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
-
-  /* Form Controls */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .form-group { margin-bottom: 20px; }
-  label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; color: var(--g-900); }
-  label .req { color: var(--err); margin-left: 2px; }
-  label .hint { font-weight: 400; font-size: 12px; color: var(--muted); margin-left: 6px; }
-  input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="url"], textarea, select {
-    width: 100%; padding: 11px 14px; border: 1.5px solid var(--line); border-radius: 12px;
-    font: inherit; font-size: 15px; color: var(--ink); background: #fff; transition: all .15s;
-  }
-  input:focus, textarea:focus, select:focus {
-    outline: none; border-color: var(--g-500); box-shadow: 0 0 0 3px var(--g-100);
-  }
-  textarea { min-height: 100px; resize: vertical; }
-  .char-count { font-size: 12px; color: var(--muted); text-align: right; margin-top: 4px; }
-  .err-msg { font-size: 12px; color: var(--err); margin-top: 4px; display: none; }
-  .has-err input, .has-err textarea { border-color: var(--err); background: #fff8f8; }
-  .has-err .err-msg { display: block; }
-
-  /* Color Palette Selection */
-  .theme-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 6px; }
-  .theme-card {
-    border: 2px solid var(--line); border-radius: 14px; padding: 10px 12px; cursor: pointer;
-    display: flex; align-items: center; gap: 10px; transition: all .2s; background: #fff;
-  }
-  .theme-card:hover { border-color: var(--g-500); transform: translateY(-2px); }
-  .theme-card.active { border-color: var(--g-700); background: var(--g-50); box-shadow: 0 4px 12px rgba(23,102,58,.15); }
-  .dot-color { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,.2); flex: none; }
-  .theme-label { font-size: 13px; font-weight: 700; color: var(--ink); }
-
-  /* Image Upload Box with Instant Upload State */
-  .upload-box {
-    border: 2px dashed var(--line); border-radius: 14px; padding: 18px 16px; text-align: center;
-    background: #fafcfb; cursor: pointer; transition: all .2s; position: relative;
-  }
-  .upload-box:hover { border-color: var(--g-500); background: var(--g-100); }
-  .upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .upload-icon { font-size: 24px; margin-bottom: 4px; }
-  .upload-text { font-size: 13px; font-weight: 700; color: var(--g-700); }
-  .upload-ratio { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-  /* Uploading / Uploaded Card */
-  .img-card {
-    display: flex; align-items: center; gap: 12px; background: #fff; border: 1.5px solid var(--line);
-    border-radius: 14px; padding: 10px 14px; margin-top: 8px; transition: all .2s;
-  }
-  .img-card.is-uploading { border-color: var(--gold-2); background: #fffdf9; }
-  .img-card.is-done { border-color: var(--g-500); background: #f6fcf8; }
-  .img-card.is-error { border-color: var(--err); background: #fff5f5; }
-  .img-card img { width: 56px; height: 56px; object-fit: cover; border-radius: 10px; flex: none; background: #eee; }
-  .img-meta { flex: 1; min-width: 0; font-size: 12px; }
-  .img-meta-name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--g-900); }
-  .img-meta-status { font-size: 11px; margin-top: 3px; display: flex; align-items: center; gap: 6px; }
-  .status-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 11px; }
-  .tag-uploading { background: #fff3db; color: #a66005; }
-  .tag-done { background: var(--g-100); color: var(--g-700); }
-  .tag-err { background: #ffeaea; color: var(--err); }
-  .img-url-link { font-family: monospace; color: var(--g-700); text-decoration: underline; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; max-width: 280px; margin-top: 2px; }
-  .btn-remove-img {
-    background: none; border: 0; color: var(--err); font-size: 20px; cursor: pointer; padding: 6px; border-radius: 8px; flex: none;
-  }
-  .btn-remove-img:hover { background: #ffeaea; }
-
-  /* Product Block */
-  .prod-card {
-    border: 1.5px solid var(--line); border-radius: 18px; padding: 20px; margin-bottom: 20px;
-    background: #fafcfb; position: relative;
-  }
-  .prod-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-  .prod-badge {
-    background: var(--gold); color: #3a2604; font-weight: 800; font-size: 12px;
-    padding: 4px 10px; border-radius: 8px;
-  }
-  .btn-del-prod {
-    background: none; border: 0; color: var(--err); font-size: 13px; font-weight: 700; cursor: pointer;
-  }
-  .btn-del-prod:hover { text-decoration: underline; }
-  .btn-add-prod {
-    width: 100%; border: 2px dashed var(--g-500); background: #fff; color: var(--g-700);
-    padding: 14px; border-radius: 16px; font-weight: 700; font-size: 15px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .2s;
-  }
-  .btn-add-prod:hover { background: var(--g-100); }
-  .prod-limit-msg {
-    text-align: center; color: #b86c22; font-weight: 600; font-size: 13px; margin-top: 10px; display: none;
-  }
-
-  /* Review Summary Step 3 */
-  .review-sec { background: var(--g-50); border-radius: 16px; padding: 18px; margin-bottom: 16px; }
-  .review-sec h4 { margin: 0 0 10px; font-size: 15px; color: var(--g-900); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
-  .review-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
-  .review-row .k { color: var(--muted); }
-  .review-row .v { font-weight: 600; text-align: right; max-width: 65%; word-break: break-word; }
-
-  /* Actions */
-  .actions { display: flex; justify-content: space-between; gap: 14px; margin-top: 24px; }
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 13px 26px; border-radius: 999px; font: inherit; font-size: 15px; font-weight: 700;
-    cursor: pointer; border: 0; transition: all .15s; text-decoration: none;
-  }
-  .btn:active { transform: scale(.98); }
-  .btn-next { background: var(--g-700); color: #fff; box-shadow: 0 8px 20px rgba(23,102,58,.25); }
-  .btn-next:hover { background: var(--g-800); }
-  .btn-prev { background: #fff; border: 1.5px solid var(--line); color: var(--ink); }
-  .btn-prev:hover { background: var(--g-50); }
-  .btn-submit { background: linear-gradient(135deg, #ffd27a, var(--gold) 45%, var(--gold-2)); color: #3a2604; box-shadow: 0 10px 24px rgba(217,154,30,.35); width: 100%; }
-
-  /* Success Modal / State */
-  .success-box {
-    display: none; text-align: center; padding: 40px 20px;
-  }
-  .success-ic {
-    width: 64px; height: 64px; border-radius: 50%; background: var(--g-100); color: var(--g-500);
-    display: grid; place-items: center; font-size: 32px; margin: 0 auto 16px; font-weight: 800;
-  }
-  .success-box h2 { color: var(--g-900); font-size: 24px; margin: 0 0 10px; }
-  .success-box p { color: var(--muted); max-width: 480px; margin: 0 auto 24px; font-size: 15px; }
-
-  /* Spinner */
-  .spinner {
-    width: 16px; height: 16px; border: 2.5px solid rgba(0,0,0,.15); border-top-color: var(--g-700);
-    border-radius: 50%; animation: spin .8s linear infinite; display: inline-block;
-  }
-  .btn-submit .spinner { border-color: rgba(255,255,255,.3); border-top-color: #fff; display: none; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .is-submitting .spinner { display: inline-block; }
-  .is-submitting span { opacity: .7; }
-
-  @media(max-width: 640px) {
-    .grid-2, .dev-grid { grid-template-columns: 1fr; }
-    .card { padding: 22px 18px; border-radius: 20px; }
-    .step-name { font-size: 11px; }
-  }
-</style>
+<link rel="stylesheet" href="/css/form.css">
 </head>
 <body>
 
-<div class="wrap">
-  <div class="header">
-    <span class="badge">Hội chợ thanh niên DTTS &amp; miền núi Khánh Hòa 2026</span>
-    <h1>Đăng ký thông tin gian hàng</h1>
-    <p>Hỗ trợ thanh niên khởi nghiệp tạo trang giới thiệu sản phẩm &amp; kết nối đối tác tại hội chợ chỉ trong vài phút.</p>
+<header class="top">
+  <img class="top-bg" src="/assets/default-cover.webp" alt="">
+  <div class="wrap top-in">
+    <a class="brand" href="/">Hội chợ khởi nghiệp thanh niên</a>
+    <span class="chip">Đăng ký gian hàng</span>
+    <h1>Tạo trang giới thiệu gian hàng của bạn</h1>
+    <p>Điền thông tin trong khoảng 10 phút. Gửi xong bạn nhận ngay đường dẫn gian hàng; trang sẽ hiện công khai sau khi Ban tổ chức xác minh.</p>
   </div>
+</header>
 
-  <!-- CẤU HÌNH WEBHOOK UPLOAD ẢNH & DEV MODE -->
-  <div class="dev-bar">
-    <div class="title">
-      <span>⚙️ Cấu hình Endpoint Upload Ảnh (n8n &rarr; Cloudflare R2):</span>
-      <span style="font-size:12px; color:var(--g-700)">Endpoint sẵn sàng</span>
-    </div>
-    
-    <div class="dev-grid" style="grid-template-columns: 2fr 1fr 1.2fr;">
-      <div>
-        <label style="font-size:12px; margin-bottom:3px">Webhook Upload Ảnh:</label>
-        <input type="text" id="n8nImgWebhook" value="https://binn8nauto.io.vn/webhook/dang-ky-gian-img">
-      </div>
-      <div>
-        <label style="font-size:12px; margin-bottom:3px">Tenant:</label>
-        <input type="text" id="n8nTenant" value="chuyendoiso" placeholder="chuyendoiso">
-      </div>
-      <div>
-        <label style="font-size:12px; margin-bottom:3px">Định dạng gửi ảnh:</label>
-        <select id="n8nPayloadType">
-          <option value="formdata">FormData (Binary WebP)</option>
-          <option value="json">JSON (Base64 WebP)</option>
-        </select>
-      </div>
-    </div>
-    <small>💡 <b>Logic mới:</b> Khi chọn ảnh, trình duyệt nén WebP và <b>gửi ngay lập tức</b> lên n8n. n8n lưu R2 rồi trả về URL. Form đăng ký cuối cùng chỉ gửi URL ảnh này!</small>
+<main class="wrap main">
 
-    <!-- Hộp Test Nhanh Endpoint Ảnh -->
-    <div class="quick-test">
-      <span class="quick-test-label">🧪 Thử gửi 1 ảnh test lên n8n ngay:</span>
-      <label class="btn-test-file">
-        <span>Chọn ảnh test thử...</span>
-        <input type="file" id="testImgInput" accept="image/*" style="display:none">
-      </label>
-      <span id="testStatusText" style="font-size:12px; color:var(--muted)"></span>
-    </div>
-    <div class="test-result-box" id="testResultBox"></div>
-  </div>
+  <ol class="stepper" id="stepper" aria-label="Các bước đăng ký">
+    <li class="st active" data-step="1"><span class="n">1</span><span class="t">Gian hàng</span></li>
+    <li class="st" data-step="2"><span class="n">2</span><span class="t">Sản phẩm</span></li>
+    <li class="st" data-step="3"><span class="n">3</span><span class="t">Xem lại &amp; gửi</span></li>
+  </ol>
 
-  <!-- STEPPER -->
-  <div class="stepper">
-    <div class="step-progress" id="stepProgress"></div>
-    <div class="step-item active" id="stepIndicator1">
-      <div class="step-num">1</div>
-      <div class="step-name">Thông tin gian hàng</div>
-    </div>
-    <div class="step-item" id="stepIndicator2">
-      <div class="step-num">2</div>
-      <div class="step-name">Sản phẩm nổi bật</div>
-    </div>
-    <div class="step-item" id="stepIndicator3">
-      <div class="step-num">3</div>
-      <div class="step-name">Xem lại &amp; Gửi</div>
-    </div>
-  </div>
+  <form id="regForm" novalidate autocomplete="off">
+    <!-- ô bẫy bot: người thật không thấy, bot hay điền -->
+    <div class="hp" aria-hidden="true"><label>Để trống<input type="text" name="hp_trap" id="hp_trap" tabindex="-1" autocomplete="off"></label></div>
 
-  <!-- FORM CONTAINER -->
-  <form id="regForm" autocomplete="off" novalidate>
-
-    <!-- ========================================================
-         BƯỚC 1: THÔNG TIN GIAN HÀNG
-         ======================================================== -->
-    <div class="form-step" id="step1">
+    <!-- ============ BƯỚC 1 ============ -->
+    <section class="step" id="step1">
       <div class="card">
-        <h2 class="sec-title">1. Thông tin chung</h2>
-        <p class="sec-desc">Tên gian hàng, câu chuyện thương hiệu và các kênh liên hệ chính thức.</p>
+        <h2>Thông tin gian hàng</h2>
+        <p class="lead">Những thông tin này sẽ hiển thị công khai trên trang gian hàng.</p>
 
-        <div class="grid-2">
-          <div class="form-group" id="grp-ten">
-            <label for="ten_gian_hang">Tên gian hàng / Cơ sở <span class="req">*</span></label>
-            <input type="text" id="ten_gian_hang" maxlength="60" placeholder="Ví dụ: Mật ong rừng Khánh Sơn">
-            <div class="char-count"><span id="cnt-ten">0</span>/60</div>
-            <div class="err-msg">Vui lòng nhập tên gian hàng (tối đa 60 ký tự).</div>
+        <div class="field">
+          <label for="ten_gian_hang">Tên gian hàng <b class="req">*</b></label>
+          <input id="ten_gian_hang" type="text" maxlength="60" placeholder="Ví dụ: Mật ong rừng Khánh Sơn">
+          <div class="meta"><span class="err"></span><span class="cnt" data-for="ten_gian_hang"></span></div>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="nhom_san_pham">Nhóm sản phẩm <i>(không bắt buộc)</i></label>
+            <input id="nhom_san_pham" type="text" maxlength="40" placeholder="Gõ nhóm sản phẩm, hoặc bấm gợi ý bên dưới">
+            <div class="chips" id="nhomChips" aria-label="Gợi ý nhóm sản phẩm"></div>
+            <div class="meta"><span class="err"></span><span class="cnt" data-for="nhom_san_pham"></span></div>
           </div>
-
-          <div class="form-group">
-            <label for="nhom_san_pham">Nhóm ngành sản phẩm <span class="hint">(tùy chọn)</span></label>
-            <input type="text" id="nhom_san_pham" maxlength="40" placeholder="VD: Nông sản, Dược liệu, Thổ cẩm...">
-            <div class="char-count"><span id="cnt-nhom">0</span>/40</div>
+          <div class="field">
+            <label for="khau_hieu">Khẩu hiệu <i>(không bắt buộc)</i></label>
+            <input id="khau_hieu" type="text" maxlength="100" placeholder="Một câu ngắn giới thiệu gian hàng">
+            <div class="meta"><span class="err"></span><span class="cnt" data-for="khau_hieu"></span></div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="khau_hieu">Khẩu hiệu / Slogan ngắn <span class="hint">(tùy chọn)</span></label>
-          <input type="text" id="khau_hieu" maxlength="100" placeholder="Ví dụ: Vị ngọt nguyên bản từ đại ngàn, thu hoạch thủ công">
-          <div class="char-count"><span id="cnt-slogan">0</span>/100</div>
+        <div class="field">
+          <label>Màu chủ đạo của trang <i>(chọn màu hợp với sản phẩm)</i></label>
+          <div class="themes" id="themes" role="radiogroup"></div>
         </div>
 
-        <div class="form-group">
-          <label>Tông màu chủ đạo trang web <span class="hint">(chọn màu phù hợp ngành hàng)</span></label>
-          <div class="theme-options" id="themePicker">
-            <div class="theme-card active" data-theme="xanh-dai-ngan">
-              <span class="dot-color" style="background:#17663a"></span>
-              <span class="theme-label">Xanh đại ngàn</span>
-            </div>
-            <div class="theme-card" data-theme="nau-vang-mat">
-              <span class="dot-color" style="background:#8c531b"></span>
-              <span class="theme-label">Nâu vàng mật</span>
-            </div>
-            <div class="theme-card" data-theme="do-tho-cam">
-              <span class="dot-color" style="background:#85222f"></span>
-              <span class="theme-label">Đỏ thổ cẩm</span>
-            </div>
-            <div class="theme-card" data-theme="cam-dat">
-              <span class="dot-color" style="background:#994d13"></span>
-              <span class="theme-label">Cam đất nung</span>
-            </div>
-            <div class="theme-card" data-theme="xanh-lam">
-              <span class="dot-color" style="background:#175173"></span>
-              <span class="theme-label">Xanh suối nguồn</span>
-            </div>
-          </div>
-          <input type="hidden" id="mau_chu_dao" value="xanh-dai-ngan">
-        </div>
-
-        <div class="form-group" id="grp-gioithieu">
-          <label for="gioi_thieu">Giới thiệu / Câu chuyện khởi nghiệp <span class="req">*</span></label>
-          <textarea id="gioi_thieu" maxlength="1500" placeholder="Kể về nguồn gốc sản phẩm, xuất xứ, quá trình thanh niên làm ra sản phẩm, tâm huyết với địa phương..."></textarea>
-          <div class="char-count"><span id="cnt-gt">0</span>/1500</div>
-          <div class="err-msg">Vui lòng nhập đoạn giới thiệu (tối thiểu 30 ký tự).</div>
+        <div class="field">
+          <label for="gioi_thieu">Giới thiệu, câu chuyện khởi nghiệp <b class="req">*</b></label>
+          <textarea id="gioi_thieu" rows="6" maxlength="1500" placeholder="Kể ngắn về sản phẩm, nơi làm ra, vì sao bạn khởi nghiệp…"></textarea>
+          <div class="meta"><span class="err"></span><span class="cnt" data-for="gioi_thieu"></span></div>
         </div>
       </div>
 
       <div class="card">
-        <h2 class="sec-title">2. Thông tin liên hệ &amp; Kênh Online</h2>
-        <p class="sec-desc">Dùng để khách hàng, đối tác liên hệ và để BTC gửi link quản lý.</p>
+        <h2>Liên hệ &amp; kênh online</h2>
+        <p class="lead">Số điện thoại hiển thị công khai để khách gọi. Email chỉ để Ban tổ chức liên hệ khi cần, không hiển thị công khai.</p>
 
-        <div class="grid-2">
-          <div class="form-group" id="grp-sdt">
-            <label for="sdt">Số điện thoại liên hệ <span class="req">*</span></label>
-            <input type="tel" id="sdt" maxlength="11" placeholder="Ví dụ: 0792200375">
-            <div class="err-msg">Số điện thoại không hợp lệ (10–11 số).</div>
+        <div class="grid2">
+          <div class="field">
+            <label for="sdt">Số điện thoại <b class="req">*</b></label>
+            <input id="sdt" type="tel" inputmode="tel" maxlength="14" placeholder="0901234567">
+            <div class="meta"><span class="err"></span></div>
           </div>
-
-          <div class="form-group" id="grp-email">
-            <label for="email">Email nhận link trang web <span class="req">*</span></label>
-            <input type="email" id="email" maxlength="100" placeholder="diachi@gmail.com">
-            <div class="err-msg">Email không đúng định dạng.</div>
+          <div class="field">
+            <label for="email">Email liên hệ <b class="req">*</b></label>
+            <input id="email" type="email" inputmode="email" maxlength="100" placeholder="ten@gmail.com">
+            <div class="meta"><span class="err"></span></div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="dia_chi">Địa chỉ cơ sở / Tổ hợp tác <span class="hint">(tùy chọn)</span></label>
-          <input type="text" id="dia_chi" maxlength="150" placeholder="Ví dụ: Thôn Tà Gụ, xã Sơn Hiệp, huyện Khánh Sơn, Khánh Hòa">
+        <div class="field">
+          <label for="dia_chi">Địa chỉ <i>(không bắt buộc)</i></label>
+          <input id="dia_chi" type="text" maxlength="150" placeholder="Thôn, xã, huyện…">
+          <div class="meta"><span class="err"></span><span class="cnt" data-for="dia_chi"></span></div>
         </div>
 
-        <div class="grid-2">
-          <div class="form-group">
-            <label for="facebook">Link Facebook Fanpage / Trang cá nhân</label>
-            <input type="url" id="facebook" placeholder="https://facebook.com/...">
-          </div>
-          <div class="form-group">
-            <label for="website">Link Website / Gian hàng số</label>
-            <input type="url" id="website" placeholder="https://...">
-          </div>
-          <div class="form-group">
-            <label for="tiktok">Link TikTok</label>
-            <input type="url" id="tiktok" placeholder="https://tiktok.com/@...">
-          </div>
-          <div class="form-group">
-            <label>Kênh khác <span class="hint">(Zalo OA, Shopee, Lazada...)</span></label>
-            <div style="display:flex; gap:8px;">
-              <input type="text" id="kenh_khac_ten" placeholder="Tên kênh (VD: Shopee)" style="width:40%">
-              <input type="url" id="kenh_khac_link" placeholder="Link URL https://..." style="width:60%">
+        <div class="grid2">
+          <div class="field"><label for="facebook">Facebook</label>
+            <input id="facebook" type="url" inputmode="url" maxlength="200" placeholder="https://facebook.com/…">
+            <div class="meta"><span class="err"></span></div></div>
+          <div class="field"><label for="tiktok">TikTok</label>
+            <input id="tiktok" type="url" inputmode="url" maxlength="200" placeholder="https://tiktok.com/@…">
+            <div class="meta"><span class="err"></span></div></div>
+          <div class="field"><label for="website">Website</label>
+            <input id="website" type="url" inputmode="url" maxlength="200" placeholder="https://…">
+            <div class="meta"><span class="err"></span></div></div>
+          <div class="field"><label for="kenh_khac_ten">Kênh khác <i>(Shopee, Zalo OA…)</i></label>
+            <div class="pair">
+              <input id="kenh_khac_ten" type="text" maxlength="30" placeholder="Tên kênh">
+              <input id="kenh_khac_link" type="url" inputmode="url" maxlength="200" placeholder="https://…">
             </div>
-          </div>
+            <div class="meta"><span class="err" data-err-for="kenh_khac_ten"></span><span class="err" data-err-for="kenh_khac_link"></span></div></div>
         </div>
       </div>
 
       <div class="card">
-        <h2 class="sec-title">3. Hình ảnh thương hiệu</h2>
-        <p class="sec-desc">Bỏ qua nếu chưa có sẵn ảnh (hệ thống sẽ tự động dùng hình mặc định). Khi chọn ảnh, hệ thống sẽ nén và đẩy ngay lên R2 qua n8n.</p>
-
-        <div class="grid-2">
-          <!-- Logo -->
-          <div class="form-group">
-            <label>Logo gian hàng <span class="hint">(gợi ý vuông 1:1)</span></label>
-            <div class="upload-box" id="box-logo">
-              <input type="file" id="file_logo" accept="image/*" onchange="uploadSingleImage('logo', this, 600)">
-              <div class="upload-icon">🏷️</div>
-              <div class="upload-text">Bấm tải logo lên</div>
-              <div class="upload-ratio">Nén WebP &rarr; Lưu R2</div>
-            </div>
-            <div class="img-card" id="card-logo" style="display:none">
-              <img id="thumb-logo" alt="">
-              <div class="img-meta">
-                <div class="img-meta-name" id="name-logo"></div>
-                <div class="img-meta-status" id="status-logo"></div>
-                <a class="img-url-link" id="url-logo" target="_blank" style="display:none"></a>
-              </div>
-              <button type="button" class="btn-remove-img" onclick="clearImage('logo')">&times;</button>
-            </div>
-          </div>
-
-          <!-- Cover Banner -->
-          <div class="form-group">
-            <label>Ảnh bìa Banner lớn <span class="hint">(gợi ý ngang 16:9)</span></label>
-            <div class="upload-box" id="box-banner">
-              <input type="file" id="file_banner" accept="image/*" onchange="uploadSingleImage('banner', this, 1600)">
-              <div class="upload-icon">🌄</div>
-              <div class="upload-text">Bấm tải ảnh bìa</div>
-              <div class="upload-ratio">Nén WebP &rarr; Lưu R2</div>
-            </div>
-            <div class="img-card" id="card-banner" style="display:none">
-              <img id="thumb-banner" alt="">
-              <div class="img-meta">
-                <div class="img-meta-name" id="name-banner"></div>
-                <div class="img-meta-status" id="status-banner"></div>
-                <a class="img-url-link" id="url-banner" target="_blank" style="display:none"></a>
-              </div>
-              <button type="button" class="btn-remove-img" onclick="clearImage('banner')">&times;</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Story Photo -->
-        <div class="form-group">
-          <label>Ảnh giới thiệu câu chuyện <span class="hint">(gợi ý 4:3 hoặc 5:4)</span></label>
-          <div class="upload-box" id="box-story">
-            <input type="file" id="file_story" accept="image/*" onchange="uploadSingleImage('story', this, 1200)">
-            <div class="upload-icon">📸</div>
-            <div class="upload-text">Bấm tải ảnh câu chuyện</div>
-            <div class="upload-ratio">Nén WebP &rarr; Lưu R2</div>
-          </div>
-          <div class="img-card" id="card-story" style="display:none">
-            <img id="thumb-story" alt="">
-            <div class="img-meta">
-              <div class="img-meta-name" id="name-story"></div>
-              <div class="img-meta-status" id="status-story"></div>
-              <a class="img-url-link" id="url-story" target="_blank" style="display:none"></a>
-            </div>
-            <button type="button" class="btn-remove-img" onclick="clearImage('story')">&times;</button>
-          </div>
-        </div>
+        <h2>Hình ảnh <span class="opt">không bắt buộc</span></h2>
+        <p class="lead">Chưa có ảnh thì bỏ qua, hệ thống dùng ảnh mặc định của hội chợ. Ảnh được tự thu nhỏ trước khi gửi nên không tốn nhiều dữ liệu.</p>
+        <div class="grid3" id="brandUploads"></div>
       </div>
 
-      <div class="actions">
-        <div></div>
-        <button type="button" class="btn btn-next" onclick="goToStep(2)">Sang bước 2: Nhập sản phẩm &rarr;</button>
-      </div>
-    </div>
+      <div class="bar"><span></span><button type="button" class="btn btn-main" data-go="2">Tiếp tục <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+    </section>
 
-    <!-- ========================================================
-         BƯỚC 2: SẢN PHẨM NỔI BẬT
-         ======================================================== -->
-    <div class="form-step" id="step2" style="display:none">
+    <!-- ============ BƯỚC 2 ============ -->
+    <section class="step" id="step2" hidden>
       <div class="card">
-        <h2 class="sec-title">Sản phẩm tiêu biểu của gian hàng</h2>
-        <p class="sec-desc">Mặc định hiển thị 3 sản phẩm. Anh/chị có thể bấm <b>Thêm sản phẩm</b> để nhập tối đa 5 sản phẩm.</p>
-
-        <div id="productList">
-          <!-- Các block sản phẩm sẽ được render tại đây bằng JS -->
-        </div>
-
-        <button type="button" class="btn-add-prod" id="btnAddProd" onclick="addProductBlock()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-          Thêm sản phẩm mới (<span id="prodCount">3</span>/5)
-        </button>
-        <div class="prod-limit-msg" id="prodLimitMsg">
-          ⚠️ Mỗi gian hàng giới hạn tối đa 5 sản phẩm. Nếu có nhu cầu thêm, vui lòng liên hệ BTC để được hỗ trợ!
-        </div>
+        <h2>Sản phẩm tiêu biểu</h2>
+        <p class="lead">Nhập tối đa 5 sản phẩm. Khối nào để trống hoàn toàn thì hệ thống bỏ qua.</p>
+        <div id="prodList"></div>
+        <button type="button" class="add" id="addProd"></button>
+        <p class="limit" id="prodLimit" hidden>Mỗi gian hàng tối đa 5 sản phẩm. Cần thêm xin liên hệ Ban tổ chức.</p>
       </div>
-
-      <div class="actions">
-        <button type="button" class="btn btn-prev" onclick="goToStep(1)">&larr; Quay lại Bước 1</button>
-        <button type="button" class="btn btn-next" onclick="goToStep(3)">Sang bước 3: Xem lại &amp; Gửi &rarr;</button>
+      <div class="bar">
+        <button type="button" class="btn btn-ghost" data-go="1"><svg class="ic" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Quay lại</button>
+        <button type="button" class="btn btn-main" data-go="3">Tiếp tục <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
-    </div>
+    </section>
 
-    <!-- ========================================================
-         BƯỚC 3: XEM LẠI & GỬI
-         ======================================================== -->
-    <div class="form-step" id="step3" style="display:none">
+    <!-- ============ BƯỚC 3 ============ -->
+    <section class="step" id="step3" hidden>
       <div class="card">
-        <h2 class="sec-title">Kiểm tra thông tin trước khi gửi</h2>
-        <p class="sec-desc">Toàn bộ ảnh đã được tải lên R2. Form này chỉ gửi các đường dẫn ảnh kèm thông tin đã nhập.</p>
+        <h2>Kiểm tra lại trước khi gửi</h2>
+        <p class="lead">Nếu cần sửa, bấm “Quay lại”. Sau khi gửi, thông tin do Ban tổ chức kiểm tra rồi mới đưa lên trang.</p>
+        <div id="review"></div>
 
-        <div class="review-sec">
-          <h4>Thông tin gian hàng</h4>
-          <div class="review-row"><span class="k">Tên gian hàng:</span><span class="v" id="rv-ten"></span></div>
-          <div class="review-row"><span class="k">Nhóm ngành:</span><span class="v" id="rv-nhom"></span></div>
-          <div class="review-row"><span class="k">Khẩu hiệu:</span><span class="v" id="rv-slogan"></span></div>
-          <div class="review-row"><span class="k">Màu chủ đạo:</span><span class="v" id="rv-mau"></span></div>
-          <div class="review-row"><span class="k">Số điện thoại:</span><span class="v" id="rv-sdt"></span></div>
-          <div class="review-row"><span class="k">Email nhận link:</span><span class="v" id="rv-email"></span></div>
-          <div class="review-row"><span class="k">Địa chỉ:</span><span class="v" id="rv-diachi"></span></div>
-          <div class="review-row"><span class="k">Hình ảnh thương hiệu:</span><span class="v" id="rv-anh-status"></span></div>
-        </div>
-
-        <div class="review-sec">
-          <h4>Danh sách sản phẩm (<span id="rv-prod-count">0</span>)</h4>
-          <div id="rv-prod-list"></div>
-        </div>
-
-        <div style="margin:20px 0 10px;">
-          <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-weight:normal">
-            <input type="checkbox" id="chk_commit" style="width:20px; height:20px; flex:none; margin-top:2px;">
-            <span>Tôi xác nhận các thông tin trên là chính xác và đồng ý để Ban tổ chức tạo trang giới thiệu tại Hội chợ khởi nghiệp 2026.</span>
-          </label>
-          <div class="err-msg" id="err-commit" style="margin-left:30px">Vui lòng tích đồng ý cam kết trước khi gửi.</div>
-        </div>
-
-        <div id="submitErrMsg" style="display:none; padding:12px; background:#fff2f2; border:1px solid #ffc9c9; border-radius:12px; color:var(--err); font-size:14px; margin-bottom:16px;"></div>
-
-        <div class="actions">
-          <button type="button" class="btn btn-prev" onclick="goToStep(2)">&larr; Quay lại Bước 2</button>
-          <button type="submit" class="btn btn-submit" id="btnSubmitForm">
-            <div class="spinner"></div>
-            <span>Xác nhận &amp; Gửi đăng ký</span>
-          </button>
-        </div>
+        <label class="consent">
+          <input type="checkbox" id="dong_y">
+          <span>Tôi xác nhận thông tin trên là chính xác và đồng ý để Ban tổ chức hiển thị công khai trang giới thiệu gian hàng của tôi tại Hội chợ khởi nghiệp thanh niên 2026.</span>
+        </label>
+        <div class="meta"><span class="err" id="err_dong_y"></span></div>
+        <div class="alert" id="submitErr" hidden></div>
       </div>
-    </div>
+      <div class="bar">
+        <button type="button" class="btn btn-ghost" data-go="2"><svg class="ic" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Quay lại</button>
+        <button type="submit" class="btn btn-gold" id="btnSubmit"><span class="spin"></span><span class="lbl">Gửi đăng ký</span></button>
+      </div>
+    </section>
   </form>
 
-  <!-- SUCCESS BOX -->
-  <div class="card success-box" id="successBox">
-    <div class="success-ic">✓</div>
-    <h2>Đăng ký gian hàng thành công!</h2>
-    <p>Toàn bộ link ảnh R2 và thông tin gian hàng đã được ghi nhận. Sau khi duyệt, link trang gian hàng và link quản lý khách hàng sẽ được gửi tự động về email của anh/chị.</p>
-    <div style="display:flex; justify-content:center; gap:12px">
-      <button type="button" class="btn btn-next" onclick="location.reload()">Đăng ký thêm gian hàng khác</button>
-      <a href="/gian-hang/" class="btn btn-prev">Xem trang mẫu demo</a>
+  <!-- ============ THÀNH CÔNG ============ -->
+  <section class="card done" id="done" hidden>
+    <div class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2>Đã nhận thông tin đăng ký gian hàng</h2>
+    <p>Trang của bạn đang được xử lý. Sau khi xử lý xong, bạn có thể truy cập và chia sẻ thông tin gian hàng.</p>
+
+    <div class="linkbox">
+      <div class="linkbox-t">Đường dẫn gian hàng của bạn — hãy lưu lại</div>
+      <div class="linkbox-row">
+        <input type="text" id="doneLink" readonly aria-label="Đường dẫn gian hàng">
+        <button type="button" class="btn btn-ghost" id="copyLink">Sao chép</button>
+      </div>
+    </div>
+
+    <p class="note" id="doneLocal" hidden>Đây là bản chạy thử trên máy: dữ liệu chưa được gửi đi đâu.</p>
+    <div class="done-act">
+      <a class="btn btn-ghost" href="/gian-hang/">Xem trang mẫu</a>
+      <a class="btn btn-main" id="doneStatus" href="/gian-hang/">Xem trạng thái trang của tôi</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <div class="f-title">Hội chợ kết nối, quảng bá &amp; thúc đẩy tiêu thụ sản phẩm khởi nghiệp</div>
+        <p style="margin:8px 0 12px">Thanh niên vùng đồng bào dân tộc thiểu số và miền núi tỉnh Khánh Hòa năm 2026</p>
+        <ul>
+          <li><svg class="ico"><use href="#i-cal"/></svg><span>Thứ Bảy, 21/11/2026 · 08:00 – 16:00</span></li>
+          <li><svg class="ico"><use href="#i-pin"/></svg><span>Bảo tàng Ninh Thuận, phường Phan Rang, tỉnh Khánh Hòa</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Đơn vị tổ chức</h4>
+        <ul>
+          <li><b class="org">Tỉnh đoàn Khánh Hòa</b></li>
+          <li><svg class="ico"><use href="#i-phone"/></svg><a href="tel:02583822346">0258 3822 346</a></li>
+          <li><svg class="ico"><use href="#i-mail"/></svg><a href="mailto:tinhdoankhanhhoa@gmail.com">tinhdoankhanhhoa@gmail.com</a></li>
+          <li><svg class="ico"><use href="#i-web"/></svg><a href="https://tinhdoankhanhhoa.org.vn" target="_blank" rel="noopener noreferrer">tinhdoankhanhhoa.org.vn</a></li>
+          <li><svg class="ico"><use href="#i-fb"/></svg><a href="https://www.facebook.com/tinhdoankhanhhoa" target="_blank" rel="noopener noreferrer">facebook.com/tinhdoankhanhhoa</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Đơn vị đồng hành</h4>
+        <ul>
+          <li><b class="org">JCI Khanhhoa</b></li>
+          <li><svg class="ico"><use href="#i-phone"/></svg><a href="tel:0772727872">0772 727 872</a></li>
+          <li><svg class="ico"><use href="#i-mail"/></svg><a href="mailto:jcikhanhhoa@gmail.com">jcikhanhhoa@gmail.com</a></li>
+          <li><svg class="ico"><use href="#i-web"/></svg><a href="https://jcikhanhhoa.org/" target="_blank" rel="noopener noreferrer">jcikhanhhoa.org</a></li>
+          <li><svg class="ico"><use href="#i-fb"/></svg><a href="https://www.facebook.com/JCIKhanhHoa" target="_blank" rel="noopener noreferrer">facebook.com/JCIKhanhHoa</a></li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-
-<script>
-/* ========================================================
-   QUẢN LÝ DỮ LIỆU & URL ẢNH TỪ R2
-   ======================================================== */
-// Bảng lưu URL ảnh sau khi n8n upload R2 thành công
-const UPLOADED_URLS = {
-  logo: null,
-  banner: null,
-  story: null,
-  products: {} // index -> URL R2
-};
-
-// Cấu hình Webhook
-const STORAGE_KEY_IMG_WEBHOOK = "n8n_img_webhook_url";
-const STORAGE_KEY_PAYLOAD_TYPE = "n8n_payload_type";
-
-const webhookInput = document.getElementById("n8nImgWebhook");
-const payloadSelect = document.getElementById("n8nPayloadType");
-
-const savedWebhook = localStorage.getItem(STORAGE_KEY_IMG_WEBHOOK);
-if (savedWebhook) webhookInput.value = savedWebhook;
-webhookInput.addEventListener("input", () => {
-  localStorage.setItem(STORAGE_KEY_IMG_WEBHOOK, webhookInput.value.trim());
-});
-
-const savedPayloadType = localStorage.getItem(STORAGE_KEY_PAYLOAD_TYPE);
-if (savedPayloadType) payloadSelect.value = savedPayloadType;
-payloadSelect.addEventListener("change", () => {
-  localStorage.setItem(STORAGE_KEY_PAYLOAD_TYPE, payloadSelect.value);
-});
-
-/* Chọn màu chủ đạo */
-document.querySelectorAll(".theme-card").forEach(card => {
-  card.addEventListener("click", () => {
-    document.querySelectorAll(".theme-card").forEach(c => c.classList.remove("active"));
-    card.classList.add("active");
-    document.getElementById("mau_chu_dao").value = card.dataset.theme;
-  });
-});
-
-/* Bộ đếm ký tự */
-function setupCharCount(inputId, countId) {
-  const inp = document.getElementById(inputId);
-  const cnt = document.getElementById(countId);
-  if (!inp || !cnt) return;
-  inp.addEventListener("input", () => cnt.textContent = inp.value.length);
-}
-setupCharCount("ten_gian_hang", "cnt-ten");
-setupCharCount("nhom_san_pham", "cnt-nhom");
-setupCharCount("khau_hieu", "cnt-slogan");
-setupCharCount("gioi_thieu", "cnt-gt");
-
-/* Nén ảnh sang WebP (Canvas) */
-function compressImage(file, maxDim = 1280, quality = 0.82) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = reject;
-    reader.onload = e => {
-      const img = new Image();
-      img.onerror = reject;
-      img.onload = () => {
-        let w = img.width, h = img.height;
-        if (Math.max(w, h) > maxDim) {
-          if (w >= h) { h = Math.round(h * (maxDim / w)); w = maxDim; }
-          else { w = Math.round(w * (maxDim / h)); h = maxDim; }
-        }
-        const canvas = document.createElement("canvas");
-        canvas.width = w; canvas.height = h;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, w, h);
-        
-        canvas.toBlob(blob => {
-          const dataUrl = canvas.toDataURL("image/webp", quality);
-          // Tự động làm sạch tên file (bỏ dấu tiếng Việt, thay khoảng trắng thành '-') để không bao giờ bị lỗi URL R2
-          const cleanName = file.name.replace(/\.[^/.]+$/, "")
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-            .replace(/đ/g, "d").replace(/Đ/g, "D")
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "");
-
-          resolve({
-            blob,
-            dataUrl,
-            origKb: (file.size / 1024).toFixed(1),
-            newKb: (blob.size / 1024).toFixed(1),
-            fileName: (cleanName || "image") + ".webp"
-          });
-        }, "image/webp", quality);
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-/* ========================================================
-   HÀM GỬI ẢNH ĐẾN N8N VÀ ĐẨY LÊN R2 (CHUẨN CƠ CHẾ MINI APP HTX)
-   ======================================================== */
-async function sendImageToN8n(compressed, typeTag) {
-  const webhookUrl = webhookInput.value.trim();
-
-  if (!webhookUrl) throw new Error("Chưa điền Webhook URL!");
-
-  // Map typeTag thành folder con trong gom cụm hoicho2411
-  let subFolder = "misc";
-  if (typeTag === "logo") subFolder = "logo";
-  else if (typeTag === "banner") subFolder = "banner";
-  else if (typeTag === "story") subFolder = "story";
-  else if (typeTag.startsWith("prod") || typeTag.startsWith("product")) subFolder = "products";
-  else if (typeTag === "test-quick") subFolder = "test";
-
-  const folder = `hoicho2411/${subFolder}`;
-  const tenantInput = document.getElementById("n8nTenant");
-  const tenant = (tenantInput ? tenantInput.value.trim() : "") || "chuyendoiso";
-  const contentType = "image/webp";
-
-  // BƯỚC 1: Gửi JSON đến n8n để lấy vé uploadUrl (Presigned URL)
-  const reqBody = {
-    fileName: compressed.fileName,
-    contentType: contentType,
-    folder: folder,
-    tenant: tenant
-  };
-
-  const res = await fetch(webhookUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(reqBody)
-  });
-
-  if (!res.ok && res.status !== 200 && res.status !== 201) {
-    throw new Error(`n8n phản hồi lỗi HTTP ${res.status}`);
-  }
-
-  // Parse kết quả trả về từ n8n
-  let respData = await res.json();
-  if (Array.isArray(respData)) respData = respData[0];
-
-  const uploadUrl = respData?.data?.uploadUrl || respData?.uploadUrl;
-  const fileUrl = respData?.data?.fileUrl || respData?.fileUrl;
-  const fileKey = respData?.data?.fileKey || respData?.fileKey;
-
-  if (!uploadUrl) {
-    throw new Error("n8n không trả về trường uploadUrl để tải ảnh lên R2!");
-  }
-
-  // BƯỚC 2: FRONTEND ĐẨY TRỰC TIẾP FILE VẬT LÝ LÊN CLOUDFLARE R2 QUA uploadUrl (CHUẨN HTX)
-  const resUp = await fetch(uploadUrl, {
-    method: "PUT",
-    headers: { "Content-Type": contentType },
-    body: compressed.blob
-  });
-
-  if (!resUp.ok) {
-    throw new Error(`Lỗi khi đẩy file lên Cloudflare R2 (HTTP ${resUp.status}). Kiểm tra CORS của bucket.`);
-  }
-
-  return { json: respData, returnedUrl: fileUrl, fileKey };
-}
-
-/* Xử lý upload ảnh thương hiệu Bước 1 */
-async function uploadSingleImage(type, fileInput, maxDim) {
-  const file = fileInput.files[0];
-  if (!file) return;
-
-  const box = document.getElementById(`box-${type}`);
-  const card = document.getElementById(`card-${type}`);
-  const thumb = document.getElementById(`thumb-${type}`);
-  const nameEl = document.getElementById(`name-${type}`);
-  const statusEl = document.getElementById(`status-${type}`);
-  const urlLink = document.getElementById(`url-${type}`);
-
-  box.style.display = "none";
-  card.style.display = "flex";
-  card.className = "img-card is-uploading";
-
-  try {
-    // 1. Nén ảnh
-    statusEl.innerHTML = `<span class="spinner"></span> Đang nén WebP...`;
-    const compressed = await compressImage(file, maxDim);
-    thumb.src = compressed.dataUrl;
-    nameEl.textContent = `${compressed.fileName} (${compressed.origKb}KB → ${compressed.newKb}KB)`;
-
-    // 2. Gửi sang n8n
-    statusEl.innerHTML = `<span class="spinner"></span> <span class="status-tag tag-uploading">Đang tải lên R2...</span>`;
-    const { json, returnedUrl } = await sendImageToN8n(compressed, type);
-
-    if (returnedUrl) {
-      UPLOADED_URLS[type] = returnedUrl;
-      card.className = "img-card is-done";
-      statusEl.innerHTML = `<span class="status-tag tag-done">✓ Đã lưu R2</span>`;
-      urlLink.href = returnedUrl;
-      urlLink.textContent = returnedUrl;
-      urlLink.style.display = "block";
-    } else {
-      // Trường hợp n8n chưa trả URL cụ thể
-      UPLOADED_URLS[type] = "uploaded_ok";
-      card.className = "img-card is-done";
-      statusEl.innerHTML = `<span class="status-tag tag-done">✓ n8n đã nhận</span> <small style="color:var(--muted)">(n8n chưa trả trường url)</small>`;
-      urlLink.style.display = "none";
-    }
-  } catch (err) {
-    card.className = "img-card is-error";
-    statusEl.innerHTML = `<span class="status-tag tag-err">Lỗi tải ảnh: ${err.message}</span>`;
-  }
-}
-
-function clearImage(type) {
-  UPLOADED_URLS[type] = null;
-  document.getElementById(`file_${type}`).value = "";
-  document.getElementById(`box-${type}`).style.display = "block";
-  document.getElementById(`card-${type}`).style.display = "none";
-}
-
-/* ========================================================
-   HỘP THỬ NHANH ENDPOINT ẢNH (QUICK TEST)
-   ======================================================== */
-document.getElementById("testImgInput").addEventListener("change", async function() {
-  const file = this.files[0];
-  if (!file) return;
-
-  const statusText = document.getElementById("testStatusText");
-  const resultBox = document.getElementById("testResultBox");
-  resultBox.style.display = "block";
-  resultBox.textContent = `[1/2] Đang nén ảnh ${file.name}...`;
-  statusText.innerHTML = `<span class="spinner"></span> Đang xử lý...`;
-
-  try {
-    const compressed = await compressImage(file, 900);
-    resultBox.textContent = `[1/2] Nén xong: ${compressed.origKb}KB → ${compressed.newKb}KB (WebP).\n[2/2] Đang gửi tới: ${webhookInput.value.trim()}...`;
-
-    const { json, returnedUrl } = await sendImageToN8n(compressed, "test-quick");
-    statusText.innerHTML = `<span style="color:var(--g-500); font-weight:700">✓ Thành công!</span>`;
-    resultBox.textContent = `🎉 N8N ĐÃ TRẢ VỀ THÀNH CÔNG!\nURL ảnh R2 trích xuất được: ${returnedUrl || "(Không thấy key 'url' trong JSON)"}\n\nChi tiết phản hồi từ n8n:\n` + JSON.stringify(json, null, 2);
-  } catch (err) {
-    statusText.innerHTML = `<span style="color:var(--err); font-weight:700">❌ Lỗi!</span>`;
-    resultBox.textContent = `❌ LỖI KHI GỬI ẢNH TỚI N8N:\n${err.message}\n\nGợi ý: Kiểm tra workflow n8n đã Active hoặc đang bấm "Listen for test event", kiểm tra CORS.`;
-  }
-});
-
-/* ========================================================
-   QUẢN LÝ SẢN PHẨM (MẶC ĐỊNH 3, TỐI ĐA 5)
-   ======================================================== */
-let productCount = 0;
-const productList = document.getElementById("productList");
-
-function addProductBlock() {
-  if (productCount >= 5) return;
-  productCount++;
-  const idx = productCount;
-
-  const card = document.createElement("div");
-  card.className = "prod-card";
-  card.id = `prodBlock_${idx}`;
-  card.innerHTML = `
-    <div class="prod-header">
-      <span class="prod-badge">Sản phẩm #${idx}</span>
-      ${idx > 1 ? `<button type="button" class="btn-del-prod" onclick="removeProductBlock(${idx})">Xóa sản phẩm này</button>` : ""}
-    </div>
-    <div class="grid-2">
-      <div class="form-group" id="grp-sp-ten-${idx}">
-        <label>Tên sản phẩm <span class="req">*</span></label>
-        <input type="text" class="p-ten" maxlength="60" placeholder="VD: Mật ong rừng nguyên chất">
-        <div class="err-msg">Vui lòng nhập tên sản phẩm.</div>
-      </div>
-      <div class="form-group">
-        <label>Đơn vị tính <span class="hint">(tùy chọn)</span></label>
-        <input type="text" class="p-donvi" maxlength="30" placeholder="VD: hũ 500ml, kg, gói 200g">
-      </div>
-    </div>
-    <div class="grid-2">
-      <div class="form-group">
-        <label>Giá bán (VNĐ) <span class="hint">(trống = 'Liên hệ')</span></label>
-        <input type="number" class="p-gia" min="0" placeholder="VD: 180000">
-      </div>
-      <div class="form-group">
-        <label>Ảnh sản phẩm <span class="hint">(gợi ý vuông 1:1)</span></label>
-        <div class="upload-box" id="box-p-${idx}">
-          <input type="file" id="file-p-${idx}" accept="image/*" onchange="uploadProductImage(${idx}, this)">
-          <div class="upload-icon">📦</div>
-          <div class="upload-text">Bấm tải ảnh sản phẩm</div>
-          <div class="upload-ratio">Nén WebP &rarr; Lưu R2</div>
-        </div>
-        <div class="img-card" id="card-p-${idx}" style="display:none">
-          <img id="thumb-p-${idx}" alt="">
-          <div class="img-meta">
-            <div class="img-meta-name" id="name-p-${idx}"></div>
-            <div class="img-meta-status" id="status-p-${idx}"></div>
-            <a class="img-url-link" id="url-p-${idx}" target="_blank" style="display:none"></a>
-          </div>
-          <button type="button" class="btn-remove-img" onclick="clearProdImage(${idx})">&times;</button>
-        </div>
-      </div>
-    </div>
-    <div class="form-group" style="margin-bottom:0">
-      <label>Mô tả ngắn sản phẩm <span class="hint">(công dụng, thành phần, cách dùng)</span></label>
-      <textarea class="p-mota" maxlength="600" placeholder="Mô tả tóm tắt điểm nổi bật của sản phẩm..." style="min-height:75px"></textarea>
-    </div>
-  `;
-  productList.appendChild(card);
-  updateProdCounter();
-}
-
-async function uploadProductImage(idx, input) {
-  const file = input.files[0];
-  if (!file) return;
-
-  const box = document.getElementById(`box-p-${idx}`);
-  const card = document.getElementById(`card-p-${idx}`);
-  const thumb = document.getElementById(`thumb-p-${idx}`);
-  const nameEl = document.getElementById(`name-p-${idx}`);
-  const statusEl = document.getElementById(`status-p-${idx}`);
-  const urlLink = document.getElementById(`url-p-${idx}`);
-
-  box.style.display = "none";
-  card.style.display = "flex";
-  card.className = "img-card is-uploading";
-
-  try {
-    statusEl.innerHTML = `<span class="spinner"></span> Đang nén WebP...`;
-    const compressed = await compressImage(file, 900);
-    thumb.src = compressed.dataUrl;
-    nameEl.textContent = `${compressed.fileName} (${compressed.origKb}KB → ${compressed.newKb}KB)`;
-
-    statusEl.innerHTML = `<span class="spinner"></span> <span class="status-tag tag-uploading">Đang tải lên R2...</span>`;
-    const { json, returnedUrl } = await sendImageToN8n(compressed, `product-${idx}`);
-
-    if (returnedUrl) {
-      UPLOADED_URLS.products[idx] = returnedUrl;
-      card.className = "img-card is-done";
-      statusEl.innerHTML = `<span class="status-tag tag-done">✓ Đã lưu R2</span>`;
-      urlLink.href = returnedUrl;
-      urlLink.textContent = returnedUrl;
-      urlLink.style.display = "block";
-    } else {
-      UPLOADED_URLS.products[idx] = "uploaded_ok";
-      card.className = "img-card is-done";
-      statusEl.innerHTML = `<span class="status-tag tag-done">✓ n8n đã nhận</span>`;
-    }
-  } catch (err) {
-    card.className = "img-card is-error";
-    statusEl.innerHTML = `<span class="status-tag tag-err">Lỗi: ${err.message}</span>`;
-  }
-}
-
-function clearProdImage(idx) {
-  delete UPLOADED_URLS.products[idx];
-  document.getElementById(`box-p-${idx}`).style.display = "block";
-  document.getElementById(`card-p-${idx}`).style.display = "none";
-  document.getElementById(`file-p-${idx}`).value = "";
-}
-
-function removeProductBlock(idx) {
-  const blk = document.getElementById(`prodBlock_${idx}`);
-  if (blk) blk.remove();
-  delete UPLOADED_URLS.products[idx];
-  productCount--;
-  updateProdCounter();
-}
-
-function updateProdCounter() {
-  document.getElementById("prodCount").textContent = productCount;
-  const isLimit = productCount >= 5;
-  document.getElementById("btnAddProd").style.display = isLimit ? "none" : "flex";
-  document.getElementById("prodLimitMsg").style.display = isLimit ? "block" : "none";
-}
-
-// Khởi tạo sẵn 3 sản phẩm mặc định
-addProductBlock();
-addProductBlock();
-addProductBlock();
-
-/* ========================================================
-   CHUYỂN BƯỚC & VALIDATION
-   ======================================================== */
-let currentStep = 1;
-
-function validateStep1() {
-  let ok = true;
-  const ten = document.getElementById("ten_gian_hang").value.trim();
-  const gt = document.getElementById("gioi_thieu").value.trim();
-  const sdt = document.getElementById("sdt").value.trim();
-  const email = document.getElementById("email").value.trim();
-
-  // Tên
-  const grpTen = document.getElementById("grp-ten");
-  if (!ten) { grpTen.classList.add("has-err"); ok = false; } else grpTen.classList.remove("has-err");
-
-  // Giới thiệu
-  const grpGt = document.getElementById("grp-gioithieu");
-  if (!gt || gt.length < 30) { grpGt.classList.add("has-err"); ok = false; } else grpGt.classList.remove("has-err");
-
-  // SĐT (10–11 số)
-  const grpSdt = document.getElementById("grp-sdt");
-  if (!/^(0[1-9])[0-9]{8,9}$/.test(sdt.replace(/\s+/g,""))) { grpSdt.classList.add("has-err"); ok = false; } else grpSdt.classList.remove("has-err");
-
-  // Email
-  const grpEmail = document.getElementById("grp-email");
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { grpEmail.classList.add("has-err"); ok = false; } else grpEmail.classList.remove("has-err");
-
-  return ok;
-}
-
-function validateStep2() {
-  let ok = true;
-  const prodCards = document.querySelectorAll(".prod-card");
-  prodCards.forEach((card) => {
-    const tenInput = card.querySelector(".p-ten");
-    const val = tenInput ? tenInput.value.trim() : "";
-    const grp = card.querySelector(".form-group");
-    if (!val) {
-      if (grp) grp.classList.add("has-err");
-      ok = false;
-    } else {
-      if (grp) grp.classList.remove("has-err");
-    }
-  });
-  return ok;
-}
-
-function goToStep(step) {
-  if (step > currentStep) {
-    if (currentStep === 1 && !validateStep1()) {
-      window.scrollTo({top: 200, behavior: "smooth"});
-      return;
-    }
-    if (currentStep === 2 && !validateStep2()) {
-      alert("Vui lòng điền tên cho tất cả các sản phẩm đã mở!");
-      return;
-    }
-  }
-
-  currentStep = step;
-  document.querySelectorAll(".form-step").forEach(s => s.style.display = "none");
-  document.getElementById(`step${step}`).style.display = "block";
-
-  // Cập nhật Stepper UI
-  document.getElementById("stepProgress").style.width = step === 1 ? "0%" : step === 2 ? "50%" : "100%";
-  for (let i = 1; i <= 3; i++) {
-    const itm = document.getElementById(`stepIndicator${i}`);
-    itm.classList.toggle("active", i === step);
-    itm.classList.toggle("done", i < step);
-  }
-
-  if (step === 3) populateReview();
-  window.scrollTo({top: 150, behavior: "smooth"});
-}
-
-/* Hiển thị tóm tắt ở bước 3 */
-function populateReview() {
-  document.getElementById("rv-ten").textContent = document.getElementById("ten_gian_hang").value.trim();
-  document.getElementById("rv-nhom").textContent = document.getElementById("nhom_san_pham").value.trim() || "(Chưa phân nhóm)";
-  document.getElementById("rv-slogan").textContent = document.getElementById("khau_hieu").value.trim() || "(Không có)";
-  
-  const themeNames = {
-    "xanh-dai-ngan": "🌿 Xanh đại ngàn",
-    "nau-vang-mat": "🍯 Nâu vàng mật",
-    "do-tho-cam": "🔴 Đỏ thổ cẩm",
-    "cam-dat": "🍊 Cam đất nung",
-    "xanh-lam": "🌊 Xanh suối nguồn"
-  };
-  document.getElementById("rv-mau").textContent = themeNames[document.getElementById("mau_chu_dao").value] || "Mặc định";
-
-  document.getElementById("rv-sdt").textContent = document.getElementById("sdt").value.trim();
-  document.getElementById("rv-email").textContent = document.getElementById("email").value.trim();
-  document.getElementById("rv-diachi").textContent = document.getElementById("dia_chi").value.trim() || "(Chưa nhập)";
-
-  const imgs = [];
-  if (UPLOADED_URLS.logo) imgs.push("Logo (đã lưu R2)");
-  if (UPLOADED_URLS.banner) imgs.push("Ảnh bìa (đã lưu R2)");
-  if (UPLOADED_URLS.story) imgs.push("Ảnh câu chuyện (đã lưu R2)");
-  document.getElementById("rv-anh-status").textContent = imgs.length ? imgs.join(", ") : "Dùng hình ảnh mặc định của Hội chợ";
-
-  // Sản phẩm
-  const rvList = document.getElementById("rv-prod-list");
-  rvList.innerHTML = "";
-  const prodCards = document.querySelectorAll(".prod-card");
-  document.getElementById("rv-prod-count").textContent = prodCards.length;
-
-  prodCards.forEach((c, idx) => {
-    const ten = c.querySelector(".p-ten").value.trim();
-    const gia = c.querySelector(".p-gia").value.trim();
-    const donvi = c.querySelector(".p-donvi").value.trim();
-    const hasImg = !!UPLOADED_URLS.products[idx + 1];
-
-    const row = document.createElement("div");
-    row.className = "review-row";
-    row.innerHTML = `
-      <span class="k">#${idx + 1}. ${ten}:</span>
-      <span class="v">${gia ? Number(gia).toLocaleString("vi-VN") + "đ" : "Liên hệ"}${donvi ? " / " + donvi : ""} ${hasImg ? "· ☁️ R2" : "· 🖼️ ảnh mẫu"}</span>
-    `;
-    rvList.appendChild(row);
-  });
-}
-
-/* ========================================================
-   GỬI FORM ĐĂNG KÝ (CHỈ GỬI TEXT + CÁC LINK ẢNH R2)
-   ======================================================== */
-document.getElementById("regForm").addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const chkCommit = document.getElementById("chk_commit");
-  const errCommit = document.getElementById("err-commit");
-  if (!chkCommit.checked) {
-    errCommit.style.display = "block";
-    return;
-  } else errCommit.style.display = "none";
-
-  // Thu thập danh sách sản phẩm (chỉ chứa link URL ảnh R2)
-  const productsData = [];
-  document.querySelectorAll(".prod-card").forEach((c, i) => {
-    const idx = i + 1;
-    productsData.push({
-      thu_tu: idx,
-      ten: c.querySelector(".p-ten").value.trim(),
-      gia: c.querySelector(".p-gia").value.trim() ? Number(c.querySelector(".p-gia").value.trim()) : null,
-      don_vi: c.querySelector(".p-donvi").value.trim() || null,
-      mo_ta: c.querySelector(".p-mota").value.trim() || null,
-      anh_url: UPLOADED_URLS.products[idx] || null
-    });
-  });
-
-  // Payload đăng ký siêu gọn gàng (chỉ chứa text & URL ảnh, KHÔNG có base64)
-  const payload = {
-    ten_gian_hang: document.getElementById("ten_gian_hang").value.trim(),
-    nhom_san_pham: document.getElementById("nhom_san_pham").value.trim() || null,
-    khau_hieu: document.getElementById("khau_hieu").value.trim() || null,
-    mau_chu_dao: document.getElementById("mau_chu_dao").value,
-    gioi_thieu: document.getElementById("gioi_thieu").value.trim(),
-    sdt: document.getElementById("sdt").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    dia_chi: document.getElementById("dia_chi").value.trim() || null,
-    facebook: document.getElementById("facebook").value.trim() || null,
-    website: document.getElementById("website").value.trim() || null,
-    tiktok: document.getElementById("tiktok").value.trim() || null,
-    kenh_khac_ten: document.getElementById("kenh_khac_ten").value.trim() || null,
-    kenh_khac_link: document.getElementById("kenh_khac_link").value.trim() || null,
-    logo_url: UPLOADED_URLS.logo || null,
-    anh_bia_url: UPLOADED_URLS.banner || null,
-    anh_gioi_thieu_url: UPLOADED_URLS.story || null,
-    san_pham: productsData,
-    created_at: new Date().toISOString()
-  };
-
-  console.log("Payload đăng ký gửi đi (gọn nhẹ):", payload);
-
-  const btnSubmit = document.getElementById("btnSubmitForm");
-  btnSubmit.classList.add("is-submitting");
-  btnSubmit.disabled = true;
-
-  // Giả lập gửi thành công (vì anh đang test phần ảnh trước)
-  setTimeout(() => {
-    btnSubmit.classList.remove("is-submitting");
-    btnSubmit.disabled = false;
-    document.getElementById("regForm").style.display = "none";
-    document.querySelector(".stepper").style.display = "none";
-    document.getElementById("successBox").style.display = "block";
-  }, 600);
-});
-</script>
-
+</footer>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
+  <symbol id="i-fb" viewBox="0 0 24 24"><path d="M15 3h-2.5A3.5 3.5 0 0 0 9 6.5V10H6.5v3.5H9V21h3.5v-7.5H15l.6-3.5h-3.1V7a1 1 0 0 1 1-1H15z"/></symbol>
+  <symbol id="i-web" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+</svg>
+
+<script src="/js/config.js"></script>
+<script src="/js/validate.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/form.js"></script>
 </body>
 </html>
