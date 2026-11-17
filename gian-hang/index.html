@@ -230,6 +230,8 @@
   .event > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.18}
   .event .wrap{position:relative}
   .event .title{color:#fff}.event .kicker{color:#ffd27a}
+  /* tiêu đề chương trình: cỡ chữ vừa phải, ngắt dòng cân đều để không rớt lẻ một chữ ở dòng cuối */
+  .ev-title{font-size:clamp(22px,2.7vw,30px);line-height:1.25;text-wrap:balance}
   .ev-top{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
   .ev-top p{color:rgba(255,255,255,.85);font-size:16.5px;margin:0 0 14px}
   .ev-info{border-radius:24px;padding:24px}
@@ -239,10 +241,15 @@
   .ev-info small{display:block;font-size:12px;opacity:.7;text-transform:uppercase;letter-spacing:.6px}
   .ev-info b{display:block;font-size:15.5px;line-height:1.4}
   .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px}
-  .pl{border-radius:20px;padding:22px}
+  .pl{border-radius:20px;padding:22px 20px}
   .pl .n{font-weight:800;font-size:28px;color:#ffd27a;line-height:1}
-  .pl h4{margin:10px 0 6px;font-size:17px;line-height:1.3}
-  .pl p{margin:0;font-size:14px;color:rgba(255,255,255,.78)}
+  .pl h4{margin:10px 0 6px;font-size:16.5px;line-height:1.3;text-wrap:balance}
+  .pl p{margin:0;font-size:14px;color:rgba(255,255,255,.78);text-wrap:pretty}
+  /* màn hình rộng: tiêu đề thẻ 1–3 luôn nằm trên một dòng (không rớt chữ); thẻ 4 dài hơn nên xuống dòng cân đều */
+  @media (min-width:1100px){ .pl:not(:last-child) h4{white-space:nowrap} }
+  /* 4 cột chỉ khi đủ rộng; hẹp hơn thì 2 cột, rồi 1 cột, để tiêu đề không bị ép xuống dòng */
+  @media (max-width:1099px){ .pillars{grid-template-columns:1fr 1fr} }
+  @media (max-width:620px){ .pillars{grid-template-columns:1fr} }
 
   /* ---------- 7. footer ---------- */
   footer{background:color-mix(in srgb,var(--g-950) 78%,#000);color:rgba(255,255,255,.78);padding:56px 0 30px;font-size:14px}
@@ -287,7 +294,7 @@
     .lead-copy{padding:36px 24px 6px}
     .form{margin:18px;padding:22px}
     .ev-top{grid-template-columns:1fr;gap:26px}
-    .pillars{grid-template-columns:1fr 1fr;gap:12px}
+    .pillars{gap:12px}
     .f-grid{grid-template-columns:1fr 1fr;gap:26px}
     .f-grid > div:first-child{grid-column:1/-1}
     body{padding-bottom:78px}
@@ -465,7 +472,7 @@ setTimeout(() => document.documentElement.classList.remove("is-loading"), 10000)
       <div class="ev-top">
         <div class="left rv">
           <span class="kicker">Về chương trình</span>
-          <h2 class="title">Hội chợ kết nối, quảng bá &amp; thúc đẩy tiêu thụ sản phẩm khởi nghiệp</h2>
+          <h2 class="title ev-title">Hội chợ kết&nbsp;nối, quảng&nbsp;bá &amp; thúc&nbsp;đẩy tiêu&nbsp;thụ sản&nbsp;phẩm khởi&nbsp;nghiệp</h2>
           <div class="bar-gold"></div>
           <p>Hội chợ của thanh niên vùng đồng bào dân tộc thiểu số và miền núi tỉnh Khánh Hòa năm 2026 là không gian để các mô hình khởi nghiệp, hợp tác xã, tổ hợp tác và hộ sản xuất giới thiệu sản phẩm đến khách hàng, mở rộng thị trường và thúc đẩy tiêu thụ.</p>
           <p>Chương trình kết nối thanh niên khởi nghiệp với doanh nhân, doanh nghiệp, chuyên gia và nhà phân phối, đồng thời hỗ trợ xây dựng thương hiệu và ứng dụng công nghệ số để sản phẩm vùng cao đến gần hơn với người tiêu dùng.</p>
@@ -474,14 +481,14 @@ setTimeout(() => document.documentElement.classList.remove("is-loading"), 10000)
           <div class="row"><div class="ic"><svg class="ico"><use href="#i-cal"/></svg></div><div><small>Ngày</small><b>Thứ Bảy, 21/11/2026</b></div></div>
           <div class="row"><div class="ic"><svg class="ico"><use href="#i-clock"/></svg></div><div><small>Thời gian</small><b>08:00 – 16:00</b></div></div>
           <div class="row"><div class="ic"><svg class="ico"><use href="#i-pin"/></svg></div><div><small>Địa điểm</small><b>Bảo tàng Ninh Thuận, phường Phan Rang, tỉnh Khánh Hòa</b></div></div>
-          <div class="row"><div class="ic"><svg class="ico"><use href="#i-users"/></svg></div><div><small>Tổ chức · Đồng hành</small><b>Tỉnh đoàn Khánh Hòa · JCI Khanhhoa</b></div></div>
+          <div class="row"><div class="ic"><svg class="ico"><use href="#i-users"/></svg></div><div><small>Đơn vị tổ chức</small><b>Tỉnh đoàn Khánh Hòa</b></div></div>
         </div>
       </div>
       <div class="pillars">
-        <div class="pl glass rv"><div class="n">01</div><h4>Trưng bày &amp; quảng bá</h4><p>Giới thiệu nông sản, đặc sản, dược liệu, thủ công mỹ nghệ và sản phẩm làng nghề của thanh niên.</p></div>
+        <div class="pl glass rv"><div class="n">01</div><h4>Trưng bày &amp; quảng bá</h4><p>Giới thiệu nông sản, đặc sản, sản phẩm chế biến, dược liệu, thủ công mỹ nghệ và sản phẩm làng nghề của thanh niên.</p></div>
         <div class="pl glass rv"><div class="n">02</div><h4>Kết nối giao thương</h4><p>Gặp gỡ trực tiếp doanh nghiệp, nhà phân phối, siêu thị và đối tác thu mua.</p></div>
-        <div class="pl glass rv"><div class="n">03</div><h4>Tư vấn phát triển sản phẩm</h4><p>Chuyên gia góp ý bao bì, thương hiệu, marketing và thương mại điện tử.</p></div>
-        <div class="pl glass rv"><div class="n">04</div><h4>Bản đồ số Khởi nghiệp thanh niên</h4><p>Ra mắt nền tảng tra cứu mô hình, sản phẩm và kết nối khách hàng qua mã QR.</p></div>
+        <div class="pl glass rv"><div class="n">03</div><h4>Tư vấn phát triển sản phẩm</h4><p>Chuyên gia góp ý bao bì, nhãn mác, thương hiệu, marketing và thương mại điện tử.</p></div>
+        <div class="pl glass rv"><div class="n">04</div><h4>Bản đồ số Khởi nghiệp thanh niên</h4><p>Ra mắt nền tảng tra cứu mô hình, sản phẩm và kết nối khách hàng.</p></div>
       </div>
     </div>
   </section>
@@ -510,7 +517,7 @@ setTimeout(() => document.documentElement.classList.remove("is-loading"), 10000)
         </ul>
       </div>
       <div>
-        <h4>Đơn vị đồng hành</h4>
+        <h4>Đơn vị triển khai landingpage</h4>
         <ul>
           <li><b class="org">JCI Khanhhoa</b></li>
           <li><svg class="ico"><use href="#i-phone"/></svg><a href="tel:0772727872">0772 727 872</a></li>
