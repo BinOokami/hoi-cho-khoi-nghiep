@@ -243,7 +243,7 @@
         <div class="rv-r col"><span>Giới thiệu</span><p>${esc(d.gioi_thieu)}</p></div>
       </div>
       <div class="rv"><h3>Liên hệ</h3>
-        ${row("Điện thoại (hiện công khai)", V.normPhone(d.sdt))}${row("Email liên hệ", d.email)}${row("Địa chỉ", d.dia_chi)}
+        ${row("Điện thoại (công khai)", V.normPhone(d.sdt))}${row("Email liên hệ", d.email)}${row("Địa chỉ", d.dia_chi)}
         ${links.length ? row("Kênh online", links.join(", ")) : ""}
       </div>
       <div class="rv"><h3>Hình ảnh</h3>
