@@ -78,7 +78,7 @@
     host.insertAdjacentHTML("beforeend", `
       <div class="up">
         ${o.label ? `<div class="up-lbl">${esc(o.label)} <i>${esc(o.hint || "")}</i></div>` : ""}
-        <label class="drop">${ICON_IMG}<span>Chọn ảnh</span><input type="file" accept="image/*" hidden></label>
+        <label class="drop">${ICON_IMG}<span>Tải ảnh lên</span><input type="file" accept="image/*" hidden></label>
         <div class="pv" hidden><img alt=""><div class="pv-i"><span class="nm"></span><span class="st"></span></div><button type="button" class="x" aria-label="Gỡ ảnh">&times;</button></div>
       </div>`);
     const root = host.lastElementChild;

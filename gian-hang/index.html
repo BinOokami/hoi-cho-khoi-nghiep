@@ -208,8 +208,9 @@
   .form h3{margin:0 0 2px;font-size:20px;color:var(--g-900)}
   .form .hint{margin:0 0 4px;color:var(--muted);font-size:13.5px}
   label{display:block;font-weight:600;margin:10px 0 4px;font-size:14px;color:#21352a}
-  input[type=text],textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;padding:10px 13px;border:1.5px solid #cfe0d5;border-radius:11px;background:rgba(255,255,255,.92);color:var(--ink);transition:border-color .2s,box-shadow .2s}
-  input:focus,textarea:focus{outline:0;border-color:var(--g-500);box-shadow:0 0 0 4px color-mix(in srgb,var(--g-500) 18%,transparent)}
+  input[type=text],textarea{width:100%;font:inherit;font-size:16px;line-height:1.4;padding:10px 13px;border:1.5px solid #bfe0cb;border-radius:11px;background:#e6f5ec;color:var(--ink);transition:border-color .2s,box-shadow .2s,background .2s}
+  input[type=text]::placeholder,textarea::placeholder{color:#7f9a89;font-size:14.5px}
+  input:focus,textarea:focus{outline:0;border-color:var(--g-500);background:#f1faf5;box-shadow:0 0 0 4px color-mix(in srgb,var(--g-500) 18%,transparent)}
   textarea{min-height:82px;resize:vertical}
   .count{font-size:12px;color:var(--muted);text-align:right;margin-top:1px;line-height:1.3}
   .err{color:#b3261e;font-size:13px;margin-top:3px;line-height:1.35}
@@ -425,8 +426,8 @@ setTimeout(() => document.documentElement.classList.remove("is-loading"), 10000)
             <input type="text" id="ten" maxlength="80" autocomplete="name" placeholder="Nguyễn Văn A / Công ty ABC">
             <div class="err" id="e-ten"></div>
 
-            <label for="lienhe">Cách liên hệ (SĐT, Zalo hoặc email)</label>
-            <input type="text" id="lienhe" maxlength="120" autocomplete="off" placeholder="0905 xxx xxx hoặc email">
+            <label for="lienhe">Phương thức liên hệ (SĐT, Zalo hoặc email)</label>
+            <input type="text" id="lienhe" maxlength="120" autocomplete="off" placeholder="0905... hoặc khach@email.com">
             <div class="err" id="e-lienhe"></div>
 
             <label for="nhucau">Nhu cầu kết nối</label>
@@ -937,15 +938,8 @@ function looksLikeContact(v){
   return /@/.test(v) ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
                      : v.replace(/\D/g,"").length >= 9 || /zalo\.me\//i.test(v);
 }
-const LEAD_ERR = { ten: "họ tên", lien_he: "cách liên hệ", nhu_cau: "nhu cầu", dong_y: "ô đồng ý", too_large: "nội dung quá dài" };
-function leadErrorText(msg) {
-  if (msg === "not_available") return "Gian hàng này hiện chưa nhận thông tin. Vui lòng thử lại sau.";
-  if (msg === "duplicate") return "Bạn vừa gửi thông tin này rồi, vui lòng đợi một phút nếu muốn gửi lại.";
-  if (msg === "busy") return "Hệ thống đang bận, vui lòng thử lại sau ít phút.";
-  const m = /^invalid:(.+)$/.exec(msg || "");
-  if (m) return "Thông tin chưa hợp lệ: " + (LEAD_ERR[m[1]] || m[1]) + ". Vui lòng kiểm tra lại.";
-  return "Gửi chưa được, vui lòng thử lại sau ít phút.";
-}
+/* Mọi lỗi từ máy chủ chỉ báo chung, không nêu chi tiết ra giao diện */
+function leadErrorText() { return "Máy chủ báo lỗi, vui lòng thử lại sau."; }
 async function sendLead(payload) {
   const C = window.APP_CONFIG;
   const res = await fetch(`${C.SUPABASE_URL}/rest/v1/rpc/gui_khach_de_lai`, {

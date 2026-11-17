@@ -32,7 +32,7 @@
     show("stLoading");
     let data;
     try { data = await rpc("lay_khach_cua_gian_hang", { p_slug: SLUG, p_token: token }); }
-    catch (_) { showError("Chưa tải được trang", "Vui lòng kiểm tra kết nối mạng rồi tải lại trang."); return; }
+    catch (_) { showError("Chưa tải được trang", "Máy chủ báo lỗi, vui lòng thử lại sau."); return; }
     if (!data) {
       const saved = localStorage.getItem(LS_KEY);
       // Link sai mã (cũ/sai) nhưng máy này đã lưu mã đúng: dùng mã đã lưu, không làm mất nó
@@ -120,7 +120,7 @@
     return '"' + s.replace(/"/g, '""') + '"';
   }
   $("btnCsv").addEventListener("click", () => {
-    const rows = [["Thời gian", "Họ tên / đơn vị", "Cách liên hệ", "Nhu cầu"]];
+    const rows = [["Thời gian", "Họ tên / đơn vị", "Phương thức liên hệ", "Nhu cầu"]];
     (DATA.leads || []).forEach(l => rows.push([new Date(l.luc).toLocaleString("vi-VN"), l.ten, l.lien_he, l.nhu_cau]));
     const csv = "\ufeff" + rows.map(r => r.map(csvCell).join(",")).join("\r\n");
     const a = document.createElement("a");
@@ -181,7 +181,7 @@
       TOKEN = r.owner_token; localStorage.setItem(LS_KEY, TOKEN);
       history.replaceState(null, "", `?s=${encodeURIComponent(SLUG)}#${TOKEN}`);
       $("newLink").value = ownerLink(TOKEN); $("rotated").hidden = false;
-    } catch (_) { await dialog({ title: "Đổi link chưa được", text: "Vui lòng kiểm tra kết nối mạng rồi thử lại sau ít phút.", okLabel: "Đã hiểu", info: true }); }
+    } catch (_) { await dialog({ title: "Đổi link chưa được", text: "Máy chủ báo lỗi, vui lòng thử lại sau.", okLabel: "Đã hiểu", info: true }); }
     finally { btn.disabled = false; }
   });
 

@@ -3,6 +3,7 @@
 (function () {
   const C = window.APP_CONFIG;
   const LS_KEY = "hoicho_dang_ky_local";
+  const SERVER_ERR = "Máy chủ báo lỗi, vui lòng thử lại sau.";
 
   /* Nén ảnh bằng canvas sang WebP, cạnh dài tối đa maxDim. */
   function compressImage(file, maxDim, quality) {
@@ -43,19 +44,21 @@
     }
     // 1) xin presigned URL từ n8n  2) PUT thẳng lên R2
     const folder = `${C.R2_FOLDER}/${subFolder}`;
-    const res = await fetch(C.N8N_IMG_WEBHOOK, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fileName: compressed.fileName, contentType: "image/webp", folder, tenant: C.TENANT })
-    });
-    if (!res.ok) throw new Error("Máy chủ ảnh đang bận (mã " + res.status + "), vui lòng thử lại.");
-    let data = await res.json();
-    if (Array.isArray(data)) data = data[0];
-    const uploadUrl = data?.data?.uploadUrl || data?.uploadUrl;
-    const fileUrl = data?.data?.fileUrl || data?.fileUrl;
-    if (!uploadUrl || !fileUrl) throw new Error("Máy chủ ảnh trả dữ liệu không đúng.");
-    const up = await fetch(uploadUrl, { method: "PUT", headers: { "Content-Type": "image/webp" }, body: compressed.blob });
-    if (!up.ok) throw new Error("Không tải được ảnh lên (mã " + up.status + "), vui lòng thử lại.");
-    return fileUrl;
+    try {
+      const res = await fetch(C.N8N_IMG_WEBHOOK, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fileName: compressed.fileName, contentType: "image/webp", folder, tenant: C.TENANT })
+      });
+      if (!res.ok) throw 0;
+      let data = await res.json();
+      if (Array.isArray(data)) data = data[0];
+      const uploadUrl = data?.data?.uploadUrl || data?.uploadUrl;
+      const fileUrl = data?.data?.fileUrl || data?.fileUrl;
+      if (!uploadUrl || !fileUrl) throw 0;
+      const up = await fetch(uploadUrl, { method: "PUT", headers: { "Content-Type": "image/webp" }, body: compressed.blob });
+      if (!up.ok) throw 0;
+      return fileUrl;
+    } catch (_) { throw new Error(SERVER_ERR); }   // không lộ chi tiết lỗi ra giao diện
   }
 
   /* Gửi đăng ký. payload gồm các trường theo ROADMAP mục 4 (ảnh là URL). */
@@ -68,32 +71,16 @@
       localStorage.setItem(LS_KEY, JSON.stringify(list));
       return { ok: true, slug };
     }
-    const res = await fetch(`${C.SUPABASE_URL}/rest/v1/rpc/dang_ky_gian_hang`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", apikey: C.SUPABASE_KEY },
-      body: JSON.stringify({ p: payload })
-    });
-    const data = await res.json().catch(() => null);
-    if (!res.ok) throw new Error(friendlyError(data && data.message));
-    return { ok: true, slug: data && data.slug };
-  }
-
-  /* Lỗi từ hàm dang_ky_gian_hang có dạng "invalid:<trường>" */
-  const FIELD_NAMES = {
-    ten_gian_hang: "tên gian hàng", gioi_thieu: "phần giới thiệu", sdt: "số điện thoại", email: "email",
-    nhom_san_pham: "nhóm sản phẩm", khau_hieu: "khẩu hiệu", dia_chi: "địa chỉ", facebook: "link Facebook",
-    tiktok: "link TikTok", website: "link website", kenh_khac_ten: "tên kênh khác", kenh_khac_link: "link kênh khác",
-    kenh_khac: "kênh khác", logo: "logo", anh_bia: "ảnh bìa", anh_gioi_thieu: "ảnh giới thiệu", san_pham: "danh sách sản phẩm",
-    "san_pham.ten": "tên sản phẩm", "san_pham.mo_ta": "mô tả sản phẩm", "san_pham.don_vi": "đơn vị sản phẩm",
-    "san_pham.gia": "giá sản phẩm", "san_pham.anh": "ảnh sản phẩm", mau_chu_dao: "màu chủ đạo", dong_y: "ô xác nhận"
-  };
-  function friendlyError(msg) {
-    const m = /^invalid:(.+)$/.exec(msg || "");
-    if (!m) return "Gửi chưa được, vui lòng thử lại sau ít phút.";
-    if (m[1] === "duplicate") return "Email này vừa đăng ký xong. Vui lòng đợi vài phút nếu muốn gửi lại.";
-    if (m[1] === "busy") return "Hệ thống đang nhận nhiều đăng ký cùng lúc, vui lòng thử lại sau ít phút.";
-    if (m[1] === "too_large") return "Dữ liệu quá lớn, vui lòng rút gọn nội dung.";
-    return "Thông tin chưa hợp lệ: " + (FIELD_NAMES[m[1]] || m[1]) + ". Vui lòng kiểm tra lại.";
+    try {
+      const res = await fetch(`${C.SUPABASE_URL}/rest/v1/rpc/dang_ky_gian_hang`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: C.SUPABASE_KEY },
+        body: JSON.stringify({ p: payload })
+      });
+      if (!res.ok) throw 0;
+      const data = await res.json().catch(() => null);
+      return { ok: true, slug: data && data.slug };
+    } catch (_) { throw new Error(SERVER_ERR); }   // mọi lỗi từ máy chủ chỉ báo chung, không nêu chi tiết
   }
 
   window.API = { compressImage, uploadImage, submitRegistration };
