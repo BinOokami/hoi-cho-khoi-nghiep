@@ -19,6 +19,10 @@ a{color:inherit}
 .top-in{position:relative;z-index:2}
 .top-in{display:flex;flex-direction:column;align-items:flex-start}
 .brand{color:#fff;text-decoration:none;font-weight:700;font-size:15px}
+.top-row{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%}
+.btn-home{display:inline-flex;align-items:center;gap:7px;flex:none;padding:8px 16px;border-radius:999px;color:#fff;text-decoration:none;font-weight:600;font-size:14px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .18s}
+.btn-home:hover{background:rgba(255,255,255,.24)}
+.btn-home .ic{width:17px;height:17px}
 .chip{display:inline-block;margin:26px 0 10px;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .top h1{margin:0 0 10px;font-size:clamp(25px,6vw,36px);line-height:1.2;font-weight:800;letter-spacing:-.3px}
 .top p{margin:0;max-width:560px;color:rgba(255,255,255,.88);font-size:15.5px}

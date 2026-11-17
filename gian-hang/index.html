@@ -100,6 +100,10 @@
   .nav .links{margin-left:auto;display:flex;gap:26px}
   .nav .links a{color:rgba(255,255,255,.88);text-decoration:none;font-weight:500;font-size:15px}
   .nav .links a:hover{color:#fff}
+  /* nút nhà: chỉ hiện trên điện thoại (máy tính đã có "Trang chủ" trong menu) */
+  .nav-home{display:none;width:40px;height:40px;border-radius:50%;place-items:center;color:#fff;margin-left:auto;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);text-decoration:none}
+  .nav-home .ico{width:20px;height:20px}
+  .nav-home:hover{background:rgba(255,255,255,.24)}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:700;text-decoration:none;border:0;border-radius:999px;padding:12px 22px;cursor:pointer;transition:transform .15s;white-space:nowrap}
   .btn:active{transform:scale(.97)}
   .btn-gold{background:linear-gradient(135deg,#ffd27a,var(--gold) 45%,var(--gold-2));color:#3a2604;box-shadow:0 10px 24px -8px rgba(217,154,30,.7)}
@@ -275,7 +279,7 @@
 
   /* ---------- responsive ---------- */
   @media (max-width:900px){
-    .nav .links{display:none}.nav .nav-share{margin-left:auto}
+    .nav .links{display:none}.nav-home{display:grid}.nav .nav-share{margin-left:10px}
     .hero{min-height:0;padding:100px 0 110px}
     .hero-grid{grid-template-columns:1fr}
     .logo-card{display:none}
@@ -335,11 +339,13 @@ setTimeout(() => document.documentElement.classList.remove("is-loading"), 10000)
   <div class="wrap in">
     <a class="brand" href="#top"><img id="navLogo" alt=""><span id="navName"></span></a>
     <nav class="links">
+      <a href="/">Trang chủ</a>
       <a href="#gioi-thieu">Giới thiệu</a>
       <a href="#san-pham">Sản phẩm</a>
       <a href="#ket-noi">Liên hệ</a>
       <a href="#hoi-cho">Về chương trình</a>
     </nav>
+    <a class="nav-home" id="navHome" href="/" aria-label="Trang chủ"><svg class="ico"><use href="#i-home"/></svg></a>
     <button type="button" class="btn btn-gold nav-share" id="shareBtn" aria-haspopup="dialog"><svg class="ico"><use href="#i-share"/></svg>Chia sẻ</button>
   </div>
 </header>
@@ -552,6 +558,7 @@ setTimeout(() => document.documentElement.classList.remove("is-loading"), 10000)
   <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
   <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></symbol>
   <symbol id="i-fb" viewBox="0 0 24 24"><path d="M15 3h-2.5A3.5 3.5 0 0 0 9 6.5V10H6.5v3.5H9V21h3.5v-7.5H15l.6-3.5h-3.1V7a1 1 0 0 1 1-1H15z"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></symbol>
   <symbol id="i-web" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
   <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.6 2.8 2.6 4.6 5 5"/></symbol>
   <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
@@ -629,6 +636,7 @@ function showMessage(title, text, actions, brand) {
   document.querySelector("#nav .links")?.remove();
   document.querySelector("#nav .nav-share")?.remove();
   document.getElementById("nav").classList.add("solid");
+  document.getElementById("navHome").style.display = "grid";   // menu đã gỡ: nút nhà hiện cả trên máy tính
   document.getElementById("navLogo").src = (brand && brand.logo) || "/assets/default-logo.webp";
   document.getElementById("navName").textContent = (brand && brand.name) || "Hội chợ khởi nghiệp thanh niên";
   const hero = document.getElementById("top");
