@@ -9,7 +9,8 @@
   const BOOTH_FIELDS = ["ten_gian_hang", "nhom_san_pham", "khau_hieu", "gioi_thieu", "sdt", "email", "dia_chi",
     "facebook", "tiktok", "website", "kenh_khac_ten", "kenh_khac_link"];
 
-  let step = 1;
+  let step = 1, navToken = 0;
+  const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let theme = V.THEMES[0].id;
   const brandUps = {};   // logo / anh_bia / anh_gioi_thieu -> uploader
   const prodUps = new Map(); // phần tử .prod -> uploader
@@ -106,7 +107,7 @@
       }
     });
     $(".x", root).addEventListener("click", reset);
-    return { get url() { return url; }, get busy() { return busy; }, reset };
+    return { get url() { return url; }, get busy() { return busy; }, get preview() { return url ? $("img", pv).src : null; }, reset };
   }
 
   /* ---------- sản phẩm ---------- */
@@ -199,14 +200,25 @@
       if (step === 1 && !checkStep1()) return;
       if (step === 2 && !checkStep2()) return;
     }
-    step = n;
-    $$(".step").forEach(s => { s.hidden = s.id !== "step" + n; });
+    const from = step; step = n;
     $$(".st").forEach(s => {
       const i = Number(s.dataset.step);
       s.classList.toggle("active", i === n); s.classList.toggle("done", i < n);
     });
-    if (n === 3) renderReview();
-    window.scrollTo({ top: $("#stepper").offsetTop - 12, behavior: "smooth" });
+    const token = ++navToken, next = $("#step" + n);
+    const show = () => {
+      if (token !== navToken) return;               // có lần chuyển mới hơn thì bỏ lần này
+      $$(".step").forEach(s => { s.hidden = s !== next; s.classList.remove("leaving", "enter-fwd", "enter-back"); });
+      if (n === 3) renderReview();
+      if (!REDUCED && n !== from) next.classList.add(n > from ? "enter-fwd" : "enter-back");
+    };
+    const top = Math.max(0, $("#stepper").offsetTop - 12);
+    if (REDUCED || n === from) { show(); window.scrollTo({ top }); return; }
+    // 1) bước cũ mờ dần, 2) trang cuộn lên đầu, 3) bước mới trượt vào
+    const cur = $$(".step").find(s => !s.hidden);
+    if (cur) cur.classList.add("leaving");
+    window.scrollTo({ top, behavior: "smooth" });
+    setTimeout(show, 190);
   }
   document.addEventListener("click", e => {
     const b = e.target.closest("[data-go]"); if (b) { go(Number(b.dataset.go)); return; }
@@ -218,7 +230,10 @@
     const d = readBooth(), ps = readProducts().filter(p => !V.productIsBlank(p));
     const th = V.THEMES.find(t => t.id === theme);
     const row = (k, v) => v ? `<div class="rv-r"><span>${k}</span><b>${esc(v)}</b></div>` : "";
-    const img = (k, u) => `<span class="pill${u ? " on" : ""}">${k}: ${u ? "có ảnh" : "dùng ảnh mặc định"}</span>`;
+    // ô ảnh nhỏ: có ảnh thì hiện ảnh đã tải lên, chưa có thì hiện ô nét đứt "Mặc định"
+    const img = (k, up, fit) => { const src = up && up.preview;
+      return `<div class="rv-img${src ? "" : " def"}${fit ? " " + fit : ""}">${src ? `<img src="${esc(src)}" alt="${esc(k)}">` : "<span>Mặc định</span>"}<small>${k}</small></div>`; };
+    const thumb = src => src ? `<img class="rv-th" src="${esc(src)}" alt="">` : `<span class="rv-th def">Mặc định</span>`;
     const links = ["facebook", "tiktok", "website"].map(k => d[k] ? `${k[0].toUpperCase() + k.slice(1)}` : "").filter(Boolean);
     if (d.kenh_khac_ten) links.push(d.kenh_khac_ten);
     $("#review").innerHTML = `
@@ -232,12 +247,12 @@
         ${links.length ? row("Kênh online", links.join(", ")) : ""}
       </div>
       <div class="rv"><h3>Hình ảnh</h3>
-        <div class="pills">${img("Logo", brandUps.logo.url)}${img("Ảnh bìa", brandUps.anh_bia.url)}${img("Ảnh giới thiệu", brandUps.anh_gioi_thieu.url)}</div>
+        <div class="rv-imgs">${img("Logo", brandUps.logo, "fit")}${img("Ảnh bìa", brandUps.anh_bia)}${img("Ảnh giới thiệu", brandUps.anh_gioi_thieu)}</div>
       </div>
       <div class="rv"><h3>Sản phẩm (${ps.length})</h3>
-        ${ps.map((p, i) => `<div class="rv-p"><b>${i + 1}. ${esc(p.ten)}</b>
-          <span>${p.gia && Number(p.gia.replace(/\D/g, "")) > 0 ? esc(p.gia) + "đ" + (p.don_vi ? " / " + esc(p.don_vi) : "") : "Liên hệ để báo giá"}</span>
-          <span class="pill${p.anh ? " on" : ""}">${p.anh ? "có ảnh" : "ảnh mặc định"}</span></div>`).join("")}
+        ${ps.map((p, i) => `<div class="rv-p">${thumb(prodUps.get(p.el)?.preview)}
+          <div class="rv-pi"><b>${i + 1}. ${esc(p.ten)}</b>
+            <span>${p.gia && Number(p.gia.replace(/\D/g, "")) > 0 ? esc(p.gia) + "đ" + (p.don_vi ? " / " + esc(p.don_vi) : "") : "Liên hệ để báo giá"}</span></div></div>`).join("")}
       </div>`;
   }
 
